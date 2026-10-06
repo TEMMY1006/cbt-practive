@@ -3,698 +3,998 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EduCBT School Portal</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <title>EduCBT — School CBT Training Portal</title>
 
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<!-- ================= AUTH ================= -->
+  <!-- ================= LANDING PAGE ================= -->
+  <section id="landingPage" class="screen active">
 
-<section id="authScreen" class="auth-screen">
+    <nav class="landing-nav">
 
-  <div class="auth-left">
-    <div class="brand">
-      <div class="brand-logo">
-        <i class="fa-solid fa-graduation-cap"></i>
-      </div>
-      <span>Edu<span>CBT</span></span>
-    </div>
+      <a href="#" class="brand" data-action="home">
+        <span class="brand-mark">E</span>
+        <span>Edu<span>CBT</span></span>
+      </a>
 
-    <div class="auth-content">
-      <h1>Smart Learning.<br><span>Better Results.</span></h1>
-      <p>
-        A modern school CBT training and digital learning platform
-        designed to help students prepare, practise and improve.
-      </p>
-
-      <div class="auth-features">
-        <div>
-          <i class="fa-solid fa-circle-check"></i>
-          CBT Practice
-        </div>
-
-        <div>
-          <i class="fa-solid fa-circle-check"></i>
-          Digital Library
-        </div>
-
-        <div>
-          <i class="fa-solid fa-circle-check"></i>
-          Automatic Results
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="auth-right">
-
-    <!-- LOGIN -->
-    <div id="loginBox" class="auth-box">
-
-      <h2>Welcome Back</h2>
-      <p>Login to continue your learning journey.</p>
-
-      <form id="loginForm">
-
-        <label>Email</label>
-        <div class="input-box">
-          <i class="fa-solid fa-envelope"></i>
-          <input type="email" id="loginEmail" required placeholder="Enter your email">
-        </div>
-
-        <label>Password</label>
-        <div class="input-box">
-          <i class="fa-solid fa-lock"></i>
-          <input type="password" id="loginPassword" required placeholder="Enter your password">
-        </div>
-
-        <button class="primary-btn" type="submit">
+      <div class="nav-actions">
+        <button class="btn btn-outline" data-action="open-login">
           Login
         </button>
 
-      </form>
-
-      <p class="switch-text">
-        Don't have an account?
-        <button onclick="showRegister()">Create Account</button>
-      </p>
-
-    </div>
-
-
-    <!-- REGISTER -->
-    <div id="registerBox" class="auth-box hidden">
-
-      <h2>Create Account</h2>
-      <p>Register as a student to start practising.</p>
-
-      <form id="registerForm">
-
-        <label>Full Name</label>
-        <div class="input-box">
-          <i class="fa-solid fa-user"></i>
-          <input type="text" id="regName" required placeholder="Full name">
-        </div>
-
-        <label>Email</label>
-        <div class="input-box">
-          <i class="fa-solid fa-envelope"></i>
-          <input type="email" id="regEmail" required placeholder="Email address">
-        </div>
-
-        <label>Password</label>
-        <div class="input-box">
-          <i class="fa-solid fa-lock"></i>
-          <input type="password" id="regPassword" required placeholder="Create password">
-        </div>
-
-        <label>Class</label>
-        <select id="regClass" required>
-          <option value="">Select class</option>
-          <option>SS1</option>
-          <option>SS2</option>
-          <option>SS3</option>
-        </select>
-
-        <button class="primary-btn" type="submit">
-          Create Account
+        <button class="btn btn-primary" data-action="open-register">
+          Register
         </button>
-
-      </form>
-
-      <p class="switch-text">
-        Already have an account?
-        <button onclick="showLogin()">Login</button>
-      </p>
-
-    </div>
-
-  </div>
-</section>
-
-
-<!-- ================= MAIN APP ================= -->
-
-<section id="appScreen" class="app-screen hidden">
-
-  <!-- SIDEBAR -->
-
-  <aside class="sidebar">
-
-    <div class="sidebar-brand">
-      <div class="brand-logo">
-        <i class="fa-solid fa-graduation-cap"></i>
       </div>
-
-      <span>Edu<span>CBT</span></span>
-    </div>
-
-    <nav>
-
-      <button class="nav-item active" onclick="showPage('dashboardPage', this)">
-        <i class="fa-solid fa-house"></i>
-        Dashboard
-      </button>
-
-      <button class="nav-item" onclick="showPage('cbtPage', this)">
-        <i class="fa-solid fa-laptop"></i>
-        CBT Practice
-      </button>
-
-      <button class="nav-item" onclick="showPage('libraryPage', this)">
-        <i class="fa-solid fa-book"></i>
-        Library
-      </button>
-
-      <button class="nav-item" onclick="showPage('resultsPage', this)">
-        <i class="fa-solid fa-chart-column"></i>
-        My Results
-      </button>
 
     </nav>
 
-    <button class="logout-btn" onclick="logout()">
-      <i class="fa-solid fa-right-from-bracket"></i>
-      Logout
-    </button>
+    <main class="hero">
 
-  </aside>
+      <div class="hero-copy">
 
+        <span class="eyebrow">
+          SCHOOL CBT TRAINING PORTAL
+        </span>
 
-  <!-- MAIN CONTENT -->
+        <h1>
+          Practice smarter.
+          <br>
+          <span>Prepare with confidence.</span>
+        </h1>
 
-  <main class="main-content">
+        <p>
+          A modern school CBT platform for practice tests,
+          subject-based revision, digital notes and performance tracking.
+        </p>
 
-    <header class="topbar">
+        <div class="hero-actions">
 
-      <div>
-        <h2 id="pageTitle">Dashboard</h2>
-        <p id="pageSubtitle">Welcome back!</p>
+          <button
+            class="btn btn-primary btn-lg"
+            data-action="open-register">
+            Get Started
+          </button>
+
+          <button
+            class="btn btn-ghost btn-lg"
+            data-action="open-login">
+            Student Login
+          </button>
+
+        </div>
+
+        <div class="hero-stats">
+
+          <div>
+            <strong>50</strong>
+            <span>Questions / Test</span>
+          </div>
+
+          <div>
+            <strong>2hrs</strong>
+            <span>Exam Timer</span>
+          </div>
+
+          <div>
+            <strong>SS1–SS3</strong>
+            <span>Class Levels</span>
+          </div>
+
+        </div>
+
       </div>
 
-      <div class="student-chip">
-        <div class="avatar" id="studentAvatar">S</div>
+      <div class="hero-card">
+
+        <div class="hero-logo">E</div>
+
+        <h2>EduCBT</h2>
+
+        <p>
+          Learning • Practice • Progress
+        </p>
+
+        <div class="mini-dashboard">
+
+          <div>
+            <span>Practice Score</span>
+            <strong>82%</strong>
+          </div>
+
+          <div class="progress">
+            <span style="width:82%"></span>
+          </div>
+
+          <div class="mini-row">
+            <span>Questions</span>
+            <b>50</b>
+          </div>
+
+          <div class="mini-row">
+            <span>Time</span>
+            <b>02:00:00</b>
+          </div>
+
+        </div>
+
+      </div>
+
+    </main>
+
+    <section class="feature-strip">
+
+      <article>
+        <span>01</span>
+        <h3>CBT Practice</h3>
+        <p>
+          Timed multiple-choice practice with automatic scoring.
+        </p>
+      </article>
+
+      <article>
+        <span>02</span>
+        <h3>Digital Library</h3>
+        <p>
+          Read revision notes by subject and class.
+        </p>
+      </article>
+
+      <article>
+        <span>03</span>
+        <h3>Results History</h3>
+        <p>
+          Keep track of previous practice performance.
+        </p>
+      </article>
+
+    </section>
+
+  </section>
+
+
+  <!-- ================= AUTH PAGE ================= -->
+  <section id="authPage" class="screen auth-screen">
+
+    <div class="auth-card">
+
+      <button
+        class="icon-btn close-auth"
+        data-action="close-auth"
+        aria-label="Close">
+        ×
+      </button>
+
+      <div class="auth-logo">
+        E
+      </div>
+
+      <h2 id="authTitle">
+        Welcome back
+      </h2>
+
+      <p id="authSubtitle">
+        Login to continue to your CBT dashboard.
+      </p>
+
+
+      <!-- LOGIN -->
+
+      <form id="loginForm" class="auth-form">
+
+        <label>
+          Email
+
+          <input
+            id="loginEmail"
+            type="email"
+            required
+            placeholder="student@example.com">
+        </label>
+
+        <label>
+          Password
+
+          <input
+            id="loginPassword"
+            type="password"
+            required
+            placeholder="Enter password">
+        </label>
+
+        <button
+          class="btn btn-primary full"
+          type="submit">
+          Login
+        </button>
+
+        <p class="switch-auth">
+          New student?
+
+          <button
+            type="button"
+            data-action="show-register">
+            Create an account
+          </button>
+        </p>
+
+      </form>
+
+
+      <!-- REGISTER -->
+
+      <form id="registerForm" class="auth-form hidden">
+
+        <label>
+          Full name
+
+          <input
+            id="registerName"
+            type="text"
+            required
+            placeholder="Your full name">
+        </label>
+
+        <label>
+          Email
+
+          <input
+            id="registerEmail"
+            type="email"
+            required
+            placeholder="student@example.com">
+        </label>
+
+        <label>
+          Password
+
+          <input
+            id="registerPassword"
+            type="password"
+            minlength="6"
+            required
+            placeholder="At least 6 characters">
+        </label>
+
+        <button
+          class="btn btn-primary full"
+          type="submit">
+          Create Account
+        </button>
+
+        <p class="switch-auth">
+          Already registered?
+
+          <button
+            type="button"
+            data-action="show-login">
+            Login
+          </button>
+        </p>
+
+      </form>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================= MAIN APP ================= -->
+  <section id="appPage" class="screen app-shell">
+
+    <aside class="sidebar">
+
+      <a
+        href="#"
+        class="brand side-brand"
+        data-action="dashboard">
+
+        <span class="brand-mark">E</span>
+
+        <span>
+          Edu<span>CBT</span>
+        </span>
+
+      </a>
+
+
+      <div class="student-mini">
+
+        <div id="studentAvatar" class="avatar">
+          S
+        </div>
 
         <div>
-          <strong id="studentName">Student</strong>
-          <small id="studentClass">SS1</small>
+
+          <strong id="sidebarStudentName">
+            Student
+          </strong>
+
+          <small>
+            Student Account
+          </small>
+
         </div>
+
+      </div>
+
+
+      <nav class="side-nav">
+
+        <button data-page="dashboard">
+          <span>⌂</span>
+          Dashboard
+        </button>
+
+        <button data-page="practice">
+          <span>▣</span>
+          CBT Practice
+        </button>
+
+        <button data-page="library">
+          <span>▤</span>
+          Library
+        </button>
+
+        <button data-page="results">
+          <span>◫</span>
+          Results History
+        </button>
+
+      </nav>
+
+
+      <button
+        class="logout-btn"
+        data-action="logout">
+        ↪ Logout
+      </button>
+
+    </aside>
+
+
+    <main class="app-main">
+
+      <!-- ================= DASHBOARD ================= -->
+
+      <section
+        id="dashboardSection"
+        class="app-section active">
+
+        <div class="topbar">
+
+          <div>
+
+            <p class="muted">
+              Student Portal
+            </p>
+
+            <h1>
+              Welcome,
+              <span id="dashboardStudentName">
+                Student
+              </span>
+              👋
+            </h1>
+
+          </div>
+
+          <div
+            class="top-date"
+            id="todayText">
+          </div>
+
+        </div>
+
+
+        <div class="dashboard-grid">
+
+          <div class="welcome-panel">
+
+            <span class="eyebrow">
+              READY TO PRACTICE?
+            </span>
+
+            <h2>
+              Build your confidence one question at a time.
+            </h2>
+
+            <p>
+              Select your department, subject and class
+              to begin a 50-question CBT practice session.
+            </p>
+
+            <button
+              class="btn btn-primary"
+              data-page="practice">
+              Start CBT Practice
+            </button>
+
+          </div>
+
+
+          <div class="stat-card">
+
+            <span>Total Attempts</span>
+
+            <strong id="attemptCount">
+              0
+            </strong>
+
+            <small>
+              Practice sessions
+            </small>
+
+          </div>
+
+
+          <div class="stat-card">
+
+            <span>Best Score</span>
+
+            <strong id="bestScore">
+              0%
+            </strong>
+
+            <small>
+              Highest percentage
+            </small>
+
+          </div>
+
+
+          <div class="stat-card">
+
+            <span>Subjects</span>
+
+            <strong>
+              8+
+            </strong>
+
+            <small>
+              Across departments
+            </small>
+
+          </div>
+
+        </div>
+
+
+        <div class="section-head">
+
+          <div>
+
+            <p class="muted">
+              Quick access
+            </p>
+
+            <h2>
+              Choose what you need
+            </h2>
+
+          </div>
+
+        </div>
+
+
+        <div class="quick-grid">
+
+          <button
+            class="quick-card"
+            data-page="practice">
+
+            <span>▣</span>
+
+            <b>
+              CBT Practice
+            </b>
+
+            <small>
+              50 questions with a 2-hour timer
+            </small>
+
+          </button>
+
+
+          <button
+            class="quick-card"
+            data-page="library">
+
+            <span>▤</span>
+
+            <b>
+              Digital Library
+            </b>
+
+            <small>
+              Read notes by subject and class
+            </small>
+
+          </button>
+
+
+          <button
+            class="quick-card"
+            data-page="results">
+
+            <span>◫</span>
+
+            <b>
+              Results
+            </b>
+
+            <small>
+              Review your previous attempts
+            </small>
+
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <!-- ================= PRACTICE ================= -->
+
+      <section
+        id="practiceSection"
+        class="app-section">
+
+        <div class="topbar">
+
+          <div>
+
+            <p class="muted">
+              CBT Practice
+            </p>
+
+            <h1>
+              Choose your subject
+            </h1>
+
+          </div>
+
+        </div>
+
+
+        <div class="step-card">
+
+          <div class="step-title">
+
+            <span class="step-no">
+              1
+            </span>
+
+            <div>
+
+              <h3>
+                Department
+              </h3>
+
+              <p>
+                Select your department.
+              </p>
+
+            </div>
+
+          </div>
+
+          <div
+            id="departmentGrid"
+            class="choice-grid">
+          </div>
+
+        </div>
+
+
+        <div
+          id="subjectStep"
+          class="step-card hidden">
+
+          <div class="step-title">
+
+            <span class="step-no">
+              2
+            </span>
+
+            <div>
+
+              <h3>
+                Subject
+              </h3>
+
+              <p>
+                Choose a subject.
+              </p>
+
+            </div>
+
+          </div>
+
+          <div
+            id="subjectGrid"
+            class="choice-grid">
+          </div>
+
+        </div>
+
+
+        <div
+          id="classStep"
+          class="step-card hidden">
+
+          <div class="step-title">
+
+            <span class="step-no">
+              3
+            </span>
+
+            <div>
+
+              <h3>
+                Class
+              </h3>
+
+              <p>
+                Choose SS1, SS2 or SS3.
+              </p>
+
+            </div>
+
+          </div>
+
+          <div
+            id="classGrid"
+            class="choice-grid class-grid">
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ================= LIBRARY ================= -->
+
+      <section
+        id="librarySection"
+        class="app-section">
+
+        <div class="topbar">
+
+          <div>
+
+            <p class="muted">
+              Digital Library
+            </p>
+
+            <h1 id="libraryHeading">
+              Choose a subject
+            </h1>
+
+          </div>
+
+        </div>
+
+
+        <div
+          id="librarySubjects"
+          class="choice-grid">
+        </div>
+
+
+        <div
+          id="libraryClassArea"
+          class="hidden">
+
+          <button
+            class="text-btn"
+            data-action="library-back">
+            ← Back to subjects
+          </button>
+
+          <h2 id="libraryClassHeading"></h2>
+
+          <div
+            id="libraryClassGrid"
+            class="choice-grid class-grid">
+          </div>
+
+        </div>
+
+
+        <div
+          id="notesArea"
+          class="hidden">
+
+          <button
+            class="text-btn"
+            data-action="notes-back">
+            ← Back to classes
+          </button>
+
+          <article
+            id="notesContent"
+            class="notes-card">
+          </article>
+
+        </div>
+
+      </section>
+
+
+      <!-- ================= RESULTS ================= -->
+
+      <section
+        id="resultsSection"
+        class="app-section">
+
+        <div class="topbar">
+
+          <div>
+
+            <p class="muted">
+              Performance
+            </p>
+
+            <h1>
+              Results History
+            </h1>
+
+          </div>
+
+        </div>
+
+        <div
+          id="resultsList"
+          class="results-list">
+        </div>
+
+      </section>
+
+    </main>
+
+  </section>
+
+
+  <!-- ================= EXAM PAGE ================= -->
+
+  <section
+    id="examPage"
+    class="screen exam-screen">
+
+    <header class="exam-header">
+
+      <div class="brand">
+
+        <span class="brand-mark">
+          E
+        </span>
+
+        <span>
+          Edu<span>CBT</span>
+        </span>
+
+      </div>
+
+
+      <div class="exam-meta">
+
+        <strong id="examTitle">
+          CBT Practice
+        </strong>
+
+        <span id="examSubtitle">
+          Subject • Class
+        </span>
+
+      </div>
+
+
+      <div class="timer-box">
+
+        <small>
+          TIME REMAINING
+        </small>
+
+        <strong id="timer">
+          02:00:00
+        </strong>
+
       </div>
 
     </header>
 
 
-    <!-- ================= DASHBOARD ================= -->
+    <div class="exam-layout">
 
-    <section id="dashboardPage" class="page">
+      <main class="question-panel">
 
-      <div class="welcome-card">
+        <div class="question-top">
 
-        <div>
-          <span class="small-label">WELCOME BACK</span>
-          <h1>Hello, <span id="welcomeName">Student</span> 👋</h1>
+          <span id="questionNumber">
+            Question 1 of 50
+          </span>
 
-          <p>
-            Continue your CBT preparation and improve your academic performance.
-          </p>
+          <span
+            id="questionTopic"
+            class="topic-pill">
+            Topic
+          </span>
 
-          <button class="white-btn" onclick="openCBT()">
-            Start CBT Practice
-            <i class="fa-solid fa-arrow-right"></i>
+        </div>
+
+
+        <h2 id="questionText"></h2>
+
+
+        <div
+          id="optionsContainer"
+          class="options">
+        </div>
+
+
+        <div class="exam-controls">
+
+          <button
+            class="btn btn-outline"
+            id="prevBtn"
+            type="button">
+            ← Previous
           </button>
-        </div>
 
-        <div class="welcome-icon">
-          <i class="fa-solid fa-graduation-cap"></i>
-        </div>
+          <button
+            class="btn btn-primary"
+            id="nextBtn"
+            type="button">
+            Next →
+          </button>
 
-      </div>
-
-
-      <div class="stats-grid">
-
-        <div class="stat-card">
-          <div class="stat-icon">
-            <i class="fa-solid fa-pen-to-square"></i>
-          </div>
-
-          <div>
-            <span>Exams Taken</span>
-            <strong id="examCount">0</strong>
-          </div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-icon">
-            <i class="fa-solid fa-star"></i>
-          </div>
-
-          <div>
-            <span>Best Score</span>
-            <strong id="bestScore">0%</strong>
-          </div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-icon">
-            <i class="fa-solid fa-book-open"></i>
-          </div>
-
-          <div>
-            <span>Subjects</span>
-            <strong>24+</strong>
-          </div>
-        </div>
-
-      </div>
-
-
-      <div class="section-heading">
-        <div>
-          <h2>Quick Access</h2>
-          <p>Choose where you want to continue.</p>
-        </div>
-      </div>
-
-
-      <div class="quick-grid">
-
-        <div class="quick-card" onclick="openCBT()">
-          <div class="quick-icon blue">
-            <i class="fa-solid fa-laptop"></i>
-          </div>
-
-          <h3>CBT Practice</h3>
-          <p>Practise with 50-question tests.</p>
-
-          <span>Start Practice →</span>
-        </div>
-
-
-        <div class="quick-card" onclick="showPage('libraryPage')">
-          <div class="quick-icon green">
-            <i class="fa-solid fa-book-open"></i>
-          </div>
-
-          <h3>Digital Library</h3>
-          <p>Read notes and revise your subjects.</p>
-
-          <span>Open Library →</span>
-        </div>
-
-
-        <div class="quick-card" onclick="showPage('resultsPage')">
-          <div class="quick-icon orange">
-            <i class="fa-solid fa-chart-line"></i>
-          </div>
-
-          <h3>My Results</h3>
-          <p>View your previous CBT performance.</p>
-
-          <span>View Results →</span>
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- ================= CBT ================= -->
-
-    <section id="cbtPage" class="page hidden">
-
-      <div class="section-heading">
-        <div>
-          <h2>CBT Practice</h2>
-          <p>Select your department, subject and class.</p>
-        </div>
-      </div>
-
-
-      <div id="departmentSelection">
-
-        <h3 class="selection-title">Choose Department</h3>
-
-        <div class="department-grid">
-
-          <div class="department-card science"
-               onclick="selectDepartment('Science')">
-
-            <div>
-              <i class="fa-solid fa-flask"></i>
-            </div>
-
-            <h3>Science</h3>
-            <p>8 Subjects</p>
-
-          </div>
-
-
-          <div class="department-card commercial"
-               onclick="selectDepartment('Commercial')">
-
-            <div>
-              <i class="fa-solid fa-chart-pie"></i>
-            </div>
-
-            <h3>Commercial</h3>
-            <p>8 Subjects</p>
-
-          </div>
-
-
-          <div class="department-card arts"
-               onclick="selectDepartment('Arts')">
-
-            <div>
-              <i class="fa-solid fa-palette"></i>
-            </div>
-
-            <h3>Arts</h3>
-            <p>8 Subjects</p>
-
-          </div>
+          <button
+            class="btn btn-danger hidden"
+            id="submitBtn"
+            type="button">
+            Submit Exam
+          </button>
 
         </div>
 
-      </div>
+      </main>
 
 
-      <div id="subjectSelection" class="hidden">
+      <aside class="navigator-panel">
 
-        <button class="back-btn" onclick="backToDepartments()">
-          ← Departments
-        </button>
-
-        <h3 class="selection-title">Choose Subject</h3>
-
-        <div id="subjectGrid" class="subject-grid"></div>
-
-      </div>
-
-
-      <div id="classSelection" class="hidden">
-
-        <button class="back-btn" onclick="backToSubjects()">
-          ← Subjects
-        </button>
-
-        <h3 class="selection-title">
-          Choose Class
+        <h3>
+          Question Navigator
         </h3>
 
-        <div id="classGrid" class="class-grid">
-
-          <div class="class-card" onclick="startExam('SS1')">
-            <div>SS1</div>
-            <p>Senior Secondary 1</p>
-          </div>
-
-          <div class="class-card" onclick="startExam('SS2')">
-            <div>SS2</div>
-            <p>Senior Secondary 2</p>
-          </div>
-
-          <div class="class-card" onclick="startExam('SS3')">
-            <div>SS3</div>
-            <p>Senior Secondary 3</p>
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- ================= LIBRARY ================= -->
-
-    <section id="libraryPage" class="page hidden">
-
-      <div class="section-heading">
-        <div>
-          <h2>Digital Library</h2>
-          <p>Select a subject and class to read your notes.</p>
-        </div>
-      </div>
-
-      <div id="librarySubjects" class="subject-grid"></div>
-
-      <div id="libraryClasses" class="hidden">
-
-        <button class="back-btn" onclick="backToLibrarySubjects()">
-          ← Subjects
-        </button>
-
-        <h3 id="librarySubjectTitle" class="selection-title"></h3>
-
-        <div class="class-grid">
-
-          <div class="class-card"
-               onclick="openNotes('SS1')">
-            <div>SS1</div>
-            <p>Senior Secondary 1 Notes</p>
-          </div>
-
-          <div class="class-card"
-               onclick="openNotes('SS2')">
-            <div>SS2</div>
-            <p>Senior Secondary 2 Notes</p>
-          </div>
-
-          <div class="class-card"
-               onclick="openNotes('SS3')">
-            <div>SS3</div>
-            <p>Senior Secondary 3 Notes</p>
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <div id="notesArea" class="hidden">
-
-        <button class="back-btn" onclick="backToLibraryClasses()">
-          ← Classes
-        </button>
-
-        <div class="notes-container">
-
-          <div class="notes-header">
-            <span id="notesClass"></span>
-            <h2 id="notesTitle"></h2>
-          </div>
-
-          <div id="notesContent"></div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- ================= RESULTS ================= -->
-
-    <section id="resultsPage" class="page hidden">
-
-      <div class="section-heading">
-        <div>
-          <h2>My Results</h2>
-          <p>Track your CBT practice performance.</p>
-        </div>
-      </div>
-
-      <div id="resultsContainer">
-
-        <div class="empty-state">
-          <i class="fa-solid fa-chart-simple"></i>
-          <h3>No Results Yet</h3>
-          <p>Complete a CBT practice test to see your results here.</p>
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- ================= EXAM ================= -->
-
-    <section id="examPage" class="page hidden">
-
-      <div class="exam-top">
-
-        <div>
-          <span id="examDepartment"></span>
-          <h2 id="examSubject"></h2>
-          <p id="examClass"></p>
-        </div>
-
-        <div class="timer">
-          <i class="fa-regular fa-clock"></i>
-          <span id="timer">50:00</span>
-        </div>
-
-      </div>
-
-
-      <div class="exam-layout">
-
-        <div class="exam-question-card">
-
-          <div class="question-header">
-
-            <span>
-              Question <strong id="questionNumber">1</strong>
-              of 50
-            </span>
-
-            <span id="answeredText">
-              0 answered
-            </span>
-
-          </div>
-
-          <div class="progress">
-            <div id="questionProgress"></div>
-          </div>
-
-
-          <h2 id="questionText">
-            Question loading...
-          </h2>
-
-          <div id="optionsContainer"></div>
-
-
-          <div class="exam-controls">
-
-            <button id="previousBtn"
-                    class="secondary-btn"
-                    onclick="previousQuestion()">
-              <i class="fa-solid fa-arrow-left"></i>
-              Previous
-            </button>
-
-            <button id="nextBtn"
-                    class="primary-btn exam-next"
-                    onclick="nextQuestion()">
-              Next
-              <i class="fa-solid fa-arrow-right"></i>
-            </button>
-
-            <button id="submitBtn"
-                    class="submit-btn hidden"
-                    onclick="submitExam()">
-              Submit Exam
-            </button>
-
-          </div>
-
-        </div>
-
-
-        <aside class="question-sidebar">
-
-          <h3>Question Navigator</h3>
-
-          <p>Click a number to jump to a question.</p>
-
-          <div id="questionNumbers"></div>
-
-          <div class="navigator-legend">
-            <span>
-              <i class="answered-dot"></i>
-              Answered
-            </span>
-
-            <span>
-              <i class="current-dot"></i>
-              Current
-            </span>
-          </div>
-
-        </aside>
-
-      </div>
-
-    </section>
-
-
-    <!-- ================= RESULT ================= -->
-
-    <section id="resultPage" class="page hidden">
-
-      <div class="result-card">
-
-        <div class="result-icon">
-          <i class="fa-solid fa-trophy"></i>
-        </div>
-
-        <h1>Exam Completed!</h1>
-
-        <p id="resultMessage">
-          Here is your performance.
+        <p>
+          Click a number to jump to a question.
         </p>
 
-        <div class="score-circle">
-          <span id="resultPercentage">0%</span>
+        <div
+          id="questionNavigator"
+          class="question-navigator">
         </div>
 
-        <div class="result-info">
+        <div class="legend">
 
-          <div>
-            <span>Score</span>
-            <strong id="resultScore">0 / 50</strong>
-          </div>
+          <span>
+            <i class="dot current-dot"></i>
+            Current
+          </span>
 
-          <div>
-            <span>Subject</span>
-            <strong id="resultSubject">-</strong>
-          </div>
-
-          <div>
-            <span>Class</span>
-            <strong id="resultClass">-</strong>
-          </div>
+          <span>
+            <i class="dot answered-dot"></i>
+            Answered
+          </span>
 
         </div>
 
-        <div class="result-buttons">
+      </aside>
 
-          <button class="primary-btn" onclick="openCBT()">
-            Take Another Test
-          </button>
+    </div>
 
-          <button class="secondary-btn"
-                  onclick="showPage('resultsPage')">
-            View Results
-          </button>
+  </section>
 
+
+  <!-- ================= RESULT PAGE ================= -->
+
+  <section
+    id="resultPage"
+    class="screen result-screen">
+
+    <div class="result-card">
+
+      <div class="result-logo">
+        ✓
+      </div>
+
+      <p class="eyebrow">
+        CBT RESULT
+      </p>
+
+      <h1>
+        Exam Completed
+      </h1>
+
+      <p
+        id="resultExamLabel"
+        class="muted">
+      </p>
+
+
+      <div class="result-score">
+
+        <strong id="resultPercentage">
+          0%
+        </strong>
+
+        <span>
+          Percentage
+        </span>
+
+      </div>
+
+
+      <div class="result-grid">
+
+        <div>
+          <strong id="resultCorrect">
+            0
+          </strong>
+
+          <span>
+            Correct
+          </span>
+        </div>
+
+        <div>
+          <strong id="resultTotal">
+            50
+          </strong>
+
+          <span>
+            Total
+          </span>
+        </div>
+
+        <div>
+          <strong id="resultGrade">
+            F
+          </strong>
+
+          <span>
+            Grade
+          </span>
         </div>
 
       </div>
 
-    </section>
 
-  </main>
+      <button
+        class="btn btn-primary full"
+        data-action="result-dashboard">
+        Back to Dashboard
+      </button>
 
-</section>
+    </div>
+
+  </section>
 
 
-<div id="toast"></div>
+  <!-- ================= TOAST ================= -->
 
-<script src="script.js"></script>
+  <div
+    id="toast"
+    class="toast">
+  </div>
+
+
+  <script src="script.js"></script>
 
 </body>
 </html>

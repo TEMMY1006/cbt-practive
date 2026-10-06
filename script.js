@@ -1,11 +1,46 @@
-/* =====================================================
-   EDUCBT SCHOOL PORTAL
-   Frontend only
-   HTML + CSS + JavaScript
-===================================================== */
+/* =========================================================
+   EDUCBT — SCHOOL CBT TRAINING PORTAL
+   ========================================================= */
 
 
-/* ================= DEPARTMENTS ================= */
+/* =========================================================
+   APPLICATION STATE
+   ========================================================= */
+
+const state = {
+
+  student: JSON.parse(
+    localStorage.getItem("educbt_student") || "null"
+  ),
+
+  department: "",
+
+  subject: "",
+
+  classLevel: "",
+
+  questions: [],
+
+  current: 0,
+
+  answers: [],
+
+  timeLeft: 120 * 60,
+
+  timer: null,
+
+  submitted: false,
+
+  librarySubject: "",
+
+  libraryClass: ""
+
+};
+
+
+/* =========================================================
+   DEPARTMENTS AND SUBJECTS
+   ========================================================= */
 
 const departments = {
 
@@ -39,56 +74,72 @@ const departments = {
     "Marketing",
     "Economics",
     "Civic Education",
-    "Yoruba / Igbo / Hausa"
+    "Yoruba"
   ]
 
 };
 
 
-/* ================= SUBJECT TOPICS ================= */
+const allSubjects = [
+  ...new Set(
+    Object.values(departments).flat()
+  )
+];
 
-const topics = {
+
+/* =========================================================
+   SUBJECT TOPICS
+   ========================================================= */
+
+const subjectTopics = {
 
   "Mathematics": [
-    "Number and Numeration",
+    "Number",
     "Algebra",
     "Geometry",
     "Mensuration",
-    "Trigonometry",
     "Statistics",
     "Probability",
-    "Vectors",
-    "Matrices",
-    "Calculus"
+    "Indices",
+    "Sequences",
+    "Trigonometry",
+    "Coordinate Geometry"
   ],
 
   "English Language": [
-    "Comprehension",
     "Grammar",
     "Vocabulary",
-    "Oral English",
-    "Lexis and Structure",
-    "Summary Writing",
-    "Sentence Construction"
+    "Comprehension",
+    "Concord",
+    "Spelling",
+    "Figures of Speech",
+    "Sentence Structure",
+    "Antonyms",
+    "Synonyms",
+    "Punctuation"
   ],
 
   "Chemistry": [
+    "Matter",
     "Atomic Structure",
     "Periodic Table",
     "Chemical Bonding",
+    "Acids and Bases",
     "Stoichiometry",
-    "Acids, Bases and Salts",
     "Organic Chemistry",
-    "Electrochemistry"
+    "Rates of Reaction",
+    "Electrochemistry",
+    "Separation Techniques"
   ],
 
   "Physics": [
     "Measurement",
     "Motion",
     "Forces",
-    "Work, Energy and Power",
+    "Energy",
     "Heat",
     "Waves",
+    "Light",
     "Electricity",
     "Magnetism",
     "Modern Physics"
@@ -97,32 +148,38 @@ const topics = {
   "Biology": [
     "Cell Biology",
     "Nutrition",
-    "Transport",
     "Respiration",
-    "Excretion",
+    "Transport",
     "Reproduction",
-    "Genetics",
     "Ecology",
-    "Evolution"
+    "Genetics",
+    "Evolution",
+    "Microorganisms",
+    "Human Systems"
   ],
 
   "Agricultural Science": [
-    "Farm Management",
+    "Farm Tools",
+    "Soil",
     "Crop Production",
     "Animal Production",
-    "Soil Science",
+    "Farm Management",
+    "Pests",
+    "Diseases",
     "Agricultural Economics",
-    "Farm Tools",
-    "Pests and Diseases"
+    "Forestry",
+    "Fisheries"
   ],
 
   "Economics": [
-    "Basic Economic Problems",
-    "Demand and Supply",
+    "Demand",
+    "Supply",
     "Production",
-    "Market Structures",
-    "Money",
+    "Market",
+    "National Income",
     "Inflation",
+    "Unemployment",
+    "Money",
     "Public Finance",
     "International Trade"
   ],
@@ -133,50 +190,62 @@ const topics = {
     "Democracy",
     "Rule of Law",
     "National Values",
-    "Elections",
-    "Good Governance",
-    "National Development"
+    "Political Participation",
+    "Constitution",
+    "Leadership",
+    "Corruption",
+    "National Unity"
   ],
 
   "Accounting": [
     "Accounting Concepts",
-    "Double Entry",
-    "Ledger Accounts",
+    "Source Documents",
+    "Ledger",
     "Trial Balance",
     "Cash Book",
-    "Final Accounts",
+    "Bank Reconciliation",
     "Depreciation",
-    "Partnership"
+    "Final Accounts",
+    "Partnership",
+    "Company Accounts"
   ],
 
   "Marketing": [
     "Marketing Concepts",
     "Market Research",
     "Product",
-    "Pricing",
+    "Price",
     "Promotion",
     "Distribution",
-    "Consumer Behaviour"
+    "Consumer Behaviour",
+    "Branding",
+    "Advertising",
+    "Sales"
   ],
 
   "Commerce": [
     "Trade",
-    "Home Trade",
-    "Foreign Trade",
-    "Banking",
+    "Occupation",
+    "Business Units",
+    "Retail Trade",
+    "Wholesale Trade",
+    "Transportation",
     "Insurance",
-    "Transport",
-    "Warehousing",
-    "Business Documents"
+    "Banking",
+    "Communication",
+    "Warehousing"
   ],
 
   "Government": [
     "Constitution",
-    "Arms of Government",
+    "Democracy",
+    "Legislature",
+    "Executive",
+    "Judiciary",
     "Political Parties",
     "Elections",
-    "Citizenship",
     "Public Administration",
+    "Local Government",
     "International Relations"
   ],
 
@@ -184,1381 +253,1488 @@ const topics = {
     "Prose",
     "Poetry",
     "Drama",
-    "Literary Devices",
-    "Themes",
-    "Characterisation",
+    "Character",
     "Setting",
-    "Plot"
+    "Theme",
+    "Plot",
+    "Figures of Speech",
+    "Narrative Techniques",
+    "Literary Devices"
   ],
 
-  "Yoruba / Igbo / Hausa": [
-    "Grammar",
-    "Comprehension",
-    "Culture",
-    "Oral Literature",
-    "Proverbs",
-    "Translation",
-    "Literature"
+  "Yoruba": [
+    "Ede",
+    "Aṣa",
+    "Litireso",
+    "Girama",
+    "Owe",
+    "Àkójọpọ̀ Ọ̀rọ̀",
+    "Ìtumọ̀ Ọ̀rọ̀",
+    "Ìwé Kíkà",
+    "Àṣà Yorùbá",
+    "Àkọ́kọ́"
   ]
 
 };
 
 
-/* =====================================================
-   QUESTION BANK
-   These are original WAEC-style practice questions.
-   They are NOT official WAEC examination questions.
-===================================================== */
+/* =========================================================
+   CLASS LEVEL
+   ========================================================= */
 
-const seedQuestions = {
+const classFocus = {
 
-  "Mathematics": [
+  SS1: "foundation",
 
-    {
-      question: "Simplify: 3x + 5x.",
-      options: ["8x", "15x", "8", "2x"],
-      answer: 0
-    },
+  SS2: "intermediate",
 
-    {
-      question: "What is 25% of 200?",
-      options: ["25", "40", "50", "75"],
-      answer: 2
-    },
-
-    {
-      question: "Solve: x + 7 = 15.",
-      options: ["6", "7", "8", "9"],
-      answer: 2
-    },
-
-    {
-      question: "What is the square root of 144?",
-      options: ["10", "11", "12", "14"],
-      answer: 2
-    },
-
-    {
-      question: "A triangle has angles 60° and 70°. Find the third angle.",
-      options: ["40°", "50°", "60°", "70°"],
-      answer: 1
-    },
-
-    {
-      question: "What is 3² + 4²?",
-      options: ["12", "20", "25", "49"],
-      answer: 2
-    },
-
-    {
-      question: "Find the mean of 2, 4, 6, 8 and 10.",
-      options: ["5", "6", "7", "8"],
-      answer: 1
-    },
-
-    {
-      question: "If y = 2x and x = 5, find y.",
-      options: ["5", "7", "10", "15"],
-      answer: 2
-    }
-
-  ],
-
-
-  "English Language": [
-
-    {
-      question: "Choose the word nearest in meaning to 'rapid'.",
-      options: ["Slow", "Fast", "Weak", "Late"],
-      answer: 1
-    },
-
-    {
-      question: "Choose the correctly spelt word.",
-      options: ["Enviroment", "Environment", "Environmant", "Envaironment"],
-      answer: 1
-    },
-
-    {
-      question: "The opposite of 'ancient' is:",
-      options: ["Old", "Modern", "Historic", "Past"],
-      answer: 1
-    },
-
-    {
-      question: "Choose the correct sentence.",
-      options: [
-        "She don't like rice.",
-        "She doesn't likes rice.",
-        "She doesn't like rice.",
-        "She not like rice."
-      ],
-      answer: 2
-    },
-
-    {
-      question: "A person who writes books is called a:",
-      options: ["Painter", "Author", "Driver", "Singer"],
-      answer: 1
-    },
-
-    {
-      question: "Choose the word that best completes: 'Neither Musa nor Tunde ___ present.'",
-      options: ["are", "were", "is", "be"],
-      answer: 2
-    },
-
-    {
-      question: "The plural form of 'child' is:",
-      options: ["Childs", "Children", "Childes", "Childrens"],
-      answer: 1
-    },
-
-    {
-      question: "Which word is an adjective?",
-      options: ["Quickly", "Beautiful", "Run", "Happiness"],
-      answer: 1
-    }
-
-  ],
-
-
-  "Chemistry": [
-
-    {
-      question: "What is the chemical symbol for oxygen?",
-      options: ["Ox", "O", "Og", "On"],
-      answer: 1
-    },
-
-    {
-      question: "The smallest particle of an element that retains its properties is an:",
-      options: ["Atom", "Cell", "Ion", "Compound"],
-      answer: 0
-    },
-
-    {
-      question: "What is the pH of a neutral solution at room temperature?",
-      options: ["0", "5", "7", "14"],
-      answer: 2
-    },
-
-    {
-      question: "Which gas supports combustion?",
-      options: ["Nitrogen", "Oxygen", "Carbon dioxide", "Hydrogen"],
-      answer: 1
-    },
-
-    {
-      question: "Water has the chemical formula:",
-      options: ["CO2", "H2O", "O2", "H2"],
-      answer: 1
-    },
-
-    {
-      question: "Which of these is an acid?",
-      options: ["NaOH", "HCl", "NaCl", "CaO"],
-      answer: 1
-    },
-
-    {
-      question: "The atomic number represents the number of:",
-      options: [
-        "Neutrons",
-        "Protons",
-        "Electrons and neutrons",
-        "Shells"
-      ],
-      answer: 1
-    }
-
-  ],
-
-
-  "Physics": [
-
-    {
-      question: "The SI unit of force is:",
-      options: ["Joule", "Newton", "Watt", "Pascal"],
-      answer: 1
-    },
-
-    {
-      question: "Speed is defined as:",
-      options: [
-        "Distance divided by time",
-        "Time divided by distance",
-        "Mass divided by volume",
-        "Force divided by area"
-      ],
-      answer: 0
-    },
-
-    {
-      question: "The SI unit of energy is:",
-      options: ["Watt", "Joule", "Newton", "Volt"],
-      answer: 1
-    },
-
-    {
-      question: "Which instrument measures temperature?",
-      options: ["Barometer", "Thermometer", "Ammeter", "Voltmeter"],
-      answer: 1
-    },
-
-    {
-      question: "Electric current is measured in:",
-      options: ["Volts", "Ohms", "Amperes", "Watts"],
-      answer: 2
-    },
-
-    {
-      question: "Which of these is a vector quantity?",
-      options: ["Speed", "Distance", "Mass", "Velocity"],
-      answer: 3
-    }
-
-  ],
-
-
-  "Biology": [
-
-    {
-      question: "The basic unit of life is the:",
-      options: ["Tissue", "Organ", "Cell", "System"],
-      answer: 2
-    },
-
-    {
-      question: "Which organ pumps blood around the body?",
-      options: ["Lung", "Heart", "Kidney", "Liver"],
-      answer: 1
-    },
-
-    {
-      question: "Photosynthesis takes place mainly in the:",
-      options: ["Nucleus", "Chloroplast", "Ribosome", "Vacuole"],
-      answer: 1
-    },
-
-    {
-      question: "Which gas is released during photosynthesis?",
-      options: ["Carbon dioxide", "Oxygen", "Nitrogen", "Hydrogen"],
-      answer: 1
-    },
-
-    {
-      question: "The male reproductive cell in humans is the:",
-      options: ["Ovum", "Sperm", "Zygote", "Embryo"],
-      answer: 1
-    },
-
-    {
-      question: "The process by which plants lose water vapour is:",
-      options: ["Respiration", "Transpiration", "Digestion", "Excretion"],
-      answer: 1
-    }
-
-  ],
-
-
-  "Agricultural Science": [
-
-    {
-      question: "Which of these is a farm tool?",
-      options: ["Television", "Cutlass", "Computer", "Radio"],
-      answer: 1
-    },
-
-    {
-      question: "The removal of unwanted plants from a farm is called:",
-      options: ["Planting", "Weeding", "Harvesting", "Irrigation"],
-      answer: 1
-    },
-
-    {
-      question: "Which animal is commonly kept for milk?",
-      options: ["Cow", "Hen", "Fish", "Goat only"],
-      answer: 0
-    },
-
-    {
-      question: "The uppermost layer of soil is called:",
-      options: ["Topsoil", "Bedrock", "Subsoil", "Parent rock"],
-      answer: 0
-    }
-
-  ],
-
-
-  "Economics": [
-
-    {
-      question: "The basic economic problem is:",
-      options: [
-        "Scarcity",
-        "Inflation",
-        "Taxation",
-        "Unemployment"
-      ],
-      answer: 0
-    },
-
-    {
-      question: "Demand refers to the quantity of a commodity consumers are willing and able to:",
-      options: ["Produce", "Buy", "Export", "Store"],
-      answer: 1
-    },
-
-    {
-      question: "A market with only one seller is called:",
-      options: ["Perfect competition", "Monopoly", "Duopoly", "Oligopoly"],
-      answer: 1
-    },
-
-    {
-      question: "Money serves as a medium of:",
-      options: ["Exchange", "Production", "Transport", "Population"],
-      answer: 0
-    },
-
-    {
-      question: "Inflation means a sustained rise in the general:",
-      options: [
-        "Level of prices",
-        "Level of rainfall",
-        "Population",
-        "Production only"
-      ],
-      answer: 0
-    }
-
-  ],
-
-
-  "Civic Education": [
-
-    {
-      question: "A citizen's right to vote is known as:",
-      options: [
-        "Political participation",
-        "Economic right",
-        "Private right",
-        "Trade right"
-      ],
-      answer: 0
-    },
-
-    {
-      question: "Democracy is government by the:",
-      options: ["Military", "People", "Judiciary", "Police"],
-      answer: 1
-    },
-
-    {
-      question: "The rule of law means that:",
-      options: [
-        "Only leaders obey laws",
-        "Everyone is subject to the law",
-        "Laws are unnecessary",
-        "Citizens make no laws"
-      ],
-      answer: 1
-    },
-
-    {
-      question: "Which is a fundamental human right?",
-      options: [
-        "Right to life",
-        "Right to steal",
-        "Right to destroy property",
-        "Right to disobey every law"
-      ],
-      answer: 0
-    }
-
-  ],
-
-
-  "Accounting": [
-
-    {
-      question: "The process of recording business transactions is called:",
-      options: ["Accounting", "Marketing", "Advertising", "Banking"],
-      answer: 0
-    },
-
-    {
-      question: "A document used to record credit sales is:",
-      options: ["Invoice", "Cheque", "Receipt", "Passbook"],
-      answer: 0
-    },
-
-    {
-      question: "The left side of an account is called:",
-      options: ["Credit", "Debit", "Balance", "Capital"],
-      answer: 1
-    },
-
-    {
-      question: "A trial balance is prepared to check the:",
-      options: [
-        "Arithmetic accuracy of ledger entries",
-        "Number of employees",
-        "Price of goods",
-        "Business location"
-      ],
-      answer: 0
-    }
-
-  ],
-
-
-  "Marketing": [
-
-    {
-      question: "Marketing is mainly concerned with:",
-      options: [
-        "Satisfying customer needs",
-        "Producing electricity",
-        "Building roads",
-        "Writing laws"
-      ],
-      answer: 0
-    },
-
-    {
-      question: "Advertising is a form of:",
-      options: ["Promotion", "Production", "Transportation", "Storage"],
-      answer: 0
-    },
-
-    {
-      question: "The amount charged for a product is its:",
-      options: ["Brand", "Price", "Package", "Channel"],
-      answer: 1
-    },
-
-    {
-      question: "Market research helps a business understand:",
-      options: [
-        "Customers and the market",
-        "Only employees",
-        "Only government",
-        "Only competitors"
-      ],
-      answer: 0
-    }
-
-  ],
-
-
-  "Commerce": [
-
-    {
-      question: "Commerce involves activities that facilitate:",
-      options: [
-        "The exchange of goods and services",
-        "Only farming",
-        "Only manufacturing",
-        "Only education"
-      ],
-      answer: 0
-    },
-
-    {
-      question: "A bank is a financial institution that mainly deals with:",
-      options: ["Money", "Crops", "Clothing", "Buildings"],
-      answer: 0
-    },
-
-    {
-      question: "Insurance provides protection against:",
-      options: ["Risk", "Profit", "Education", "Advertising"],
-      answer: 0
-    },
-
-    {
-      question: "The movement of goods from one place to another is:",
-      options: ["Transport", "Banking", "Insurance", "Warehousing"],
-      answer: 0
-    }
-
-  ],
-
-
-  "Government": [
-
-    {
-      question: "The constitution is the:",
-      options: [
-        "Supreme law of a country",
-        "School timetable",
-        "Tax receipt",
-        "Political speech"
-      ],
-      answer: 0
-    },
-
-    {
-      question: "The three major arms of government are the executive, legislature and:",
-      options: ["Judiciary", "Military", "Police", "Civil service"],
-      answer: 0
-    },
-
-    {
-      question: "An election is a process of:",
-      options: [
-        "Choosing representatives",
-        "Collecting taxes",
-        "Writing textbooks",
-        "Building roads"
-      ],
-      answer: 0
-    },
-
-    {
-      question: "A political party seeks to:",
-      options: [
-        "Gain political power through elections",
-        "Stop all elections",
-        "Control schools",
-        "Ban citizens"
-      ],
-      answer: 0
-    }
-
-  ],
-
-
-  "Literature": [
-
-    {
-      question: "A comparison using 'like' or 'as' is called:",
-      options: ["Metaphor", "Simile", "Irony", "Pun"],
-      answer: 1
-    },
-
-    {
-      question: "A play is mainly written to be:",
-      options: ["Performed", "Calculated", "Cooked", "Measured"],
-      answer: 0
-    },
-
-    {
-      question: "The main character in a story is usually called the:",
-      options: ["Protagonist", "Audience", "Narrator only", "Editor"],
-      answer: 0
-    },
-
-    {
-      question: "The time and place of a story is its:",
-      options: ["Plot", "Setting", "Theme", "Conflict"],
-      answer: 1
-    }
-
-  ],
-
-
-  "Yoruba / Igbo / Hausa": [
-
-    {
-      question: "Oral literature is transmitted mainly through:",
-      options: [
-        "Spoken traditions",
-        "Computers only",
-        "Newspapers only",
-        "Television only"
-      ],
-      answer: 0
-    },
-
-    {
-      question: "A proverb generally expresses:",
-      options: [
-        "Wisdom or experience",
-        "A mathematical equation",
-        "A business receipt",
-        "A timetable"
-      ],
-      answer: 0
-    },
-
-    {
-      question: "Translation means:",
-      options: [
-        "Changing meaning from one language to another",
-        "Changing numbers",
-        "Deleting a paragraph",
-        "Writing without meaning"
-      ],
-      answer: 0
-    }
-
-  ]
+  SS3: "senior"
 
 };
 
 
-/* =====================================================
-   STATE
-===================================================== */
-
-let student = JSON.parse(localStorage.getItem("cbtStudent")) || null;
-
-let selectedDepartment = "";
-let selectedSubject = "";
-let selectedClass = "";
-
-let examQuestions = [];
-let currentQuestion = 0;
-let answers = [];
-
-let timeLeft = 120 * 60;
-let timerInterval = null;
-
-
-/* =====================================================
-   AUTH
-===================================================== */
-
-function showRegister() {
-
-  document.getElementById("loginBox").classList.add("hidden");
-  document.getElementById("registerBox").classList.remove("hidden");
-
-}
-
-
-function showLogin() {
-
-  document.getElementById("registerBox").classList.add("hidden");
-  document.getElementById("loginBox").classList.remove("hidden");
-
-}
-
-
-document.getElementById("registerForm").addEventListener("submit", function(e) {
-
-  e.preventDefault();
-
-  const name = document.getElementById("regName").value.trim();
-  const email = document.getElementById("regEmail").value.trim();
-  const password = document.getElementById("regPassword").value;
-  const studentClass = document.getElementById("regClass").value;
-
-  const account = {
-    name,
-    email,
-    password,
-    classLevel: studentClass
-  };
-
-  localStorage.setItem("cbtStudent", JSON.stringify(account));
-
-  student = account;
-
-  showToast("Account created successfully!");
-
-  loadApplication();
-
-});
-
-
-document.getElementById("loginForm").addEventListener("submit", function(e) {
-
-  e.preventDefault();
-
-  const email = document.getElementById("loginEmail").value.trim();
-  const password = document.getElementById("loginPassword").value;
-
-  const savedStudent =
-    JSON.parse(localStorage.getItem("cbtStudent"));
-
-  if (!savedStudent) {
-
-    showToast("No account found. Please register first.");
-    return;
-
-  }
-
-  if (
-    email !== savedStudent.email ||
-    password !== savedStudent.password
-  ) {
-
-    showToast("Incorrect email or password.");
-    return;
-
-  }
-
-  student = savedStudent;
-
-  showToast("Login successful!");
-
-  loadApplication();
-
-});
-
-
-function logout() {
-
-  student = null;
-
-  document.getElementById("appScreen")
-    .classList.add("hidden");
-
-  document.getElementById("authScreen")
-    .classList.remove("hidden");
-
-  showLogin();
-
-}
-
-
-/* =====================================================
-   LOAD APP
-===================================================== */
-
-function loadApplication() {
-
-  document.getElementById("authScreen")
-    .classList.add("hidden");
-
-  document.getElementById("appScreen")
-    .classList.remove("hidden");
-
-  updateStudentInfo();
-
-  updateDashboardStats();
-
-  renderLibrarySubjects();
-
-}
-
-
-function updateStudentInfo() {
-
-  if (!student) return;
-
-  document.getElementById("studentName").textContent =
-    student.name;
-
-  document.getElementById("studentClass").textContent =
-    student.classLevel;
-
-  document.getElementById("welcomeName").textContent =
-    student.name.split(" ")[0];
-
-  document.getElementById("studentAvatar").textContent =
-    student.name.charAt(0).toUpperCase();
-
-}
-
-
-/* =====================================================
-   PAGE NAVIGATION
-===================================================== */
-
-function showPage(pageId, navButton = null) {
-
-  document.querySelectorAll(".page").forEach(page => {
-    page.classList.add("hidden");
-  });
-
-  document.getElementById(pageId).classList.remove("hidden");
-
-  if (navButton) {
-
-    document.querySelectorAll(".nav-item")
-      .forEach(btn => btn.classList.remove("active"));
-
-    navButton.classList.add("active");
-
-  }
-
-  const titles = {
-
-    dashboardPage: ["Dashboard", "Welcome back!"],
-
-    cbtPage: ["CBT Practice", "Practice and improve your knowledge."],
-
-    libraryPage: ["Digital Library", "Read notes and revise your subjects."],
-
-    resultsPage: ["My Results", "Track your CBT performance."],
-
-    examPage: ["CBT Examination", "Answer all questions carefully."],
-
-    resultPage: ["Exam Result", "Your CBT performance."]
-  };
-
-  if (titles[pageId]) {
-
-    document.getElementById("pageTitle").textContent =
-      titles[pageId][0];
-
-    document.getElementById("pageSubtitle").textContent =
-      titles[pageId][1];
-
-  }
-
-}
-
-
-function openCBT() {
-
-  showPage("cbtPage");
-
-  document.querySelectorAll(".nav-item")
-    .forEach(btn => btn.classList.remove("active"));
-
-  document.querySelectorAll(".nav-item")[1]
-    .classList.add("active");
-
-  resetCBTSelection();
-
-}
-
-
-/* =====================================================
-   CBT SELECTION
-===================================================== */
-
-function resetCBTSelection() {
-
-  document.getElementById("departmentSelection")
-    .classList.remove("hidden");
-
-  document.getElementById("subjectSelection")
-    .classList.add("hidden");
-
-  document.getElementById("classSelection")
-    .classList.add("hidden");
-
-}
-
-
-function selectDepartment(department) {
-
-  selectedDepartment = department;
-
-  document.getElementById("departmentSelection")
-    .classList.add("hidden");
-
-  document.getElementById("subjectSelection")
-    .classList.remove("hidden");
-
-  const subjectGrid =
-    document.getElementById("subjectGrid");
-
-  subjectGrid.innerHTML = "";
-
-  departments[department].forEach(subject => {
-
-    const card = document.createElement("div");
-
-    card.className = "subject-card";
-
-    card.onclick = () => selectSubject(subject);
-
-    card.innerHTML = `
-
-      <div class="subject-icon">
-        <i class="fa-solid fa-book"></i>
-      </div>
-
-      <h3>${subject}</h3>
-
-      <p>
-        50 practice questions
-      </p>
-
-    `;
-
-    subjectGrid.appendChild(card);
-
-  });
-
-}
-
-
-function selectSubject(subject) {
-
-  selectedSubject = subject;
-
-  document.getElementById("subjectSelection")
-    .classList.add("hidden");
-
-  document.getElementById("classSelection")
-    .classList.remove("hidden");
-
-}
-
-
-function backToDepartments() {
-
-  resetCBTSelection();
-
-}
-
-
-function backToSubjects() {
-
-  document.getElementById("classSelection")
-    .classList.add("hidden");
-
-  document.getElementById("subjectSelection")
-    .classList.remove("hidden");
-
-}
-
-
-/* =====================================================
+/* =========================================================
    QUESTION GENERATOR
-===================================================== */
+   ========================================================= */
 
-function generateQuestions(subject, classLevel) {
+function makeQuestion(
+  id,
+  subject,
+  cls,
+  n
+) {
 
-  const original =
-    seedQuestions[subject] ||
-    seedQuestions["English Language"];
+  const topics =
+    subjectTopics[subject] || ["General"];
 
-  const questions = [];
+  const topic =
+    topics[(n - 1) % topics.length];
 
-  for (let i = 0; i < 50; i++) {
+  const focus =
+    classFocus[cls];
 
-    const base = original[i % original.length];
 
-    questions.push({
+  /* ================= MATHEMATICS ================= */
 
-      question:
-        base.question +
-        (i >= original.length
-          ? ` (Practice ${i + 1})`
-          : ""),
+  if (subject === "Mathematics") {
 
-      options: [...base.options],
+    const a =
+      n +
+      (
+        cls === "SS1"
+          ? 2
+          : cls === "SS2"
+            ? 12
+            : 22
+      );
 
-      answer: base.answer,
+    const b =
+      (n % 9) + 2;
+
+    const correct =
+      a + b;
+
+    return {
+
+      id,
 
       subject,
 
-      classLevel
+      classLevel: cls,
 
-    });
+      topic,
+
+      question:
+        `${cls} ${topic}: What is ${a} + ${b}?`,
+
+      options: [
+        String(correct),
+        String(correct + 2),
+        String(correct - 1),
+        String(correct + 5)
+      ],
+
+      answer: 0
+
+    };
 
   }
 
-  return questions;
+
+  /* ================= ENGLISH ================= */
+
+  if (subject === "English Language") {
+
+    const words = [
+
+      [
+        "rapid",
+        "quick",
+        "slow",
+        "late",
+        "heavy"
+      ],
+
+      [
+        "ancient",
+        "modern",
+        "old",
+        "past",
+        "early"
+      ],
+
+      [
+        "assist",
+        "help",
+        "stop",
+        "refuse",
+        "delay"
+      ],
+
+      [
+        "honest",
+        "truthful",
+        "false",
+        "angry",
+        "weak"
+      ],
+
+      [
+        "brief",
+        "short",
+        "wide",
+        "heavy",
+        "long"
+      ]
+
+    ];
+
+    const item =
+      words[(n - 1) % words.length];
+
+    return {
+
+      id,
+
+      subject,
+
+      classLevel: cls,
+
+      topic,
+
+      question:
+        `Choose the word nearest in meaning to "${item[0]}".`,
+
+      options: [
+        item[1],
+        item[2],
+        item[3],
+        item[4]
+      ],
+
+      answer: 0
+
+    };
+
+  }
+
+
+  /* ================= OTHER SUBJECTS ================= */
+
+  const stems = [
+
+    `Which statement is most directly related to ${topic.toLowerCase()} at ${focus} level?`,
+
+    `Which option is an important concept in ${topic.toLowerCase()}?`,
+
+    `Which of the following best describes a basic idea in ${topic.toLowerCase()}?`,
+
+    `Which option is most appropriate when studying ${topic.toLowerCase()}?`,
+
+    `What should a student know about ${topic.toLowerCase()}?`
+
+  ];
+
+
+  const correct =
+    `${topic} concept ${n}`;
+
+
+  return {
+
+    id,
+
+    subject,
+
+    classLevel: cls,
+
+    topic,
+
+    question:
+      `${stems[(n - 1) % stems.length]} (Practice item ${n})`,
+
+    options: [
+
+      correct,
+
+      `Unrelated idea ${n}`,
+
+      `Incorrect statement ${n}`,
+
+      `Opposite concept ${n}`
+
+    ],
+
+    answer: 0
+
+  };
 
 }
 
 
-/* =====================================================
-   START EXAM
-===================================================== */
+/* =========================================================
+   BUILD QUESTION BANK
+   ========================================================= */
 
-function startExam(classLevel) {
+function buildQuestionBank() {
 
-  selectedClass = classLevel;
+  const bank = {};
 
-  examQuestions =
-    generateQuestions(
-      selectedSubject,
-      selectedClass
+  allSubjects.forEach(subject => {
+
+    bank[subject] = {};
+
+    ["SS1", "SS2", "SS3"].forEach(cls => {
+
+      bank[subject][cls] =
+        Array.from(
+          { length: 50 },
+          (_, i) => {
+
+            return makeQuestion(
+              `${subject}-${cls}-${i + 1}`,
+              subject,
+              cls,
+              i + 1
+            );
+
+          }
+        );
+
+    });
+
+  });
+
+  return bank;
+
+}
+
+
+const questionBank =
+  buildQuestionBank();
+
+
+/* =========================================================
+   DOM HELPERS
+   ========================================================= */
+
+const $ = id =>
+  document.getElementById(id);
+
+
+const qs = selector =>
+  document.querySelector(selector);
+
+
+const qsa = selector =>
+  [...document.querySelectorAll(selector)];
+
+
+/* =========================================================
+   SCREEN MANAGEMENT
+   ========================================================= */
+
+function showScreen(id) {
+
+  qsa(".screen").forEach(
+    element =>
+      element.classList.remove("active")
+  );
+
+  const screen = $(id);
+
+  if (screen) {
+    screen.classList.add("active");
+  }
+
+}
+
+
+/* =========================================================
+   APP SECTION MANAGEMENT
+   ========================================================= */
+
+function showAppSection(name) {
+
+  qsa(".app-section").forEach(
+    section =>
+      section.classList.remove("active")
+  );
+
+
+  const section =
+    $(`${name}Section`);
+
+  if (section) {
+    section.classList.add("active");
+  }
+
+
+  qsa(".side-nav button").forEach(
+    button => {
+
+      button.classList.toggle(
+        "active",
+        button.dataset.page === name
+      );
+
+    }
+  );
+
+
+  if (name === "dashboard") {
+
+    refreshDashboard();
+
+  }
+
+
+  if (name === "results") {
+
+    renderResults();
+
+  }
+
+
+  if (name === "practice") {
+
+    renderDepartments();
+
+  }
+
+
+  if (name === "library") {
+
+    renderLibrarySubjects();
+
+  }
+
+}
+
+
+/* =========================================================
+   AUTH
+   ========================================================= */
+
+function openAuth(mode) {
+
+  showScreen("authPage");
+
+  const login =
+    $("loginForm");
+
+  const register =
+    $("registerForm");
+
+  const title =
+    $("authTitle");
+
+  const subtitle =
+    $("authSubtitle");
+
+
+  if (mode === "register") {
+
+    login.classList.add("hidden");
+
+    register.classList.remove("hidden");
+
+    title.textContent =
+      "Create your account";
+
+    subtitle.textContent =
+      "Register to access your CBT dashboard.";
+
+  }
+
+  else {
+
+    register.classList.add("hidden");
+
+    login.classList.remove("hidden");
+
+    title.textContent =
+      "Welcome back";
+
+    subtitle.textContent =
+      "Login to continue to your CBT dashboard.";
+
+  }
+
+}
+
+
+/* =========================================================
+   REGISTER
+   ========================================================= */
+
+function handleRegister(event) {
+
+  event.preventDefault();
+
+
+  const name =
+    $("registerName")
+      .value
+      .trim();
+
+
+  const email =
+    $("registerEmail")
+      .value
+      .trim()
+      .toLowerCase();
+
+
+  const password =
+    $("registerPassword")
+      .value;
+
+
+  if (
+    !name ||
+    !email ||
+    password.length < 6
+  ) {
+
+    toast(
+      "Enter a name, valid email and password of at least 6 characters."
     );
 
-  currentQuestion = 0;
+    return;
 
-  answers = new Array(50).fill(null);
+  }
 
-  timeLeft = 120 * 60;
 
-  showPage("examPage");
+  state.student = {
 
-  document.getElementById("examDepartment")
-    .textContent = selectedDepartment.toUpperCase();
+    name,
 
-  document.getElementById("examSubject")
-    .textContent = selectedSubject;
+    email,
 
-  document.getElementById("examClass")
-    .textContent = selectedClass;
+    password
 
-  buildQuestionNavigator();
+  };
 
-  displayQuestion();
+
+  localStorage.setItem(
+    "educbt_student",
+    JSON.stringify(state.student)
+  );
+
+
+  enterApp();
+
+
+  toast(
+    "Account created successfully."
+  );
+
+}
+
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
+function handleLogin(event) {
+
+  event.preventDefault();
+
+
+  const email =
+    $("loginEmail")
+      .value
+      .trim()
+      .toLowerCase();
+
+
+  const password =
+    $("loginPassword")
+      .value;
+
+
+  const saved =
+    JSON.parse(
+      localStorage.getItem(
+        "educbt_student"
+      ) || "null"
+    );
+
+
+  if (
+    !saved ||
+    saved.email !== email ||
+    saved.password !== password
+  ) {
+
+    toast(
+      "Incorrect email or password."
+    );
+
+    return;
+
+  }
+
+
+  state.student =
+    saved;
+
+
+  enterApp();
+
+
+  toast(
+    "Login successful."
+  );
+
+}
+
+
+/* =========================================================
+   ENTER APP
+   ========================================================= */
+
+function enterApp() {
+
+  showScreen("appPage");
+
+  updateStudentUI();
+
+  showAppSection("dashboard");
+
+}
+
+
+/* =========================================================
+   LOGOUT
+   ========================================================= */
+
+function logout() {
+
+  stopTimer();
+
+  state.student = null;
+
+  showScreen("landingPage");
+
+  toast(
+    "You have been logged out."
+  );
+
+}
+
+
+/* =========================================================
+   STUDENT UI
+   ========================================================= */
+
+function updateStudentUI() {
+
+  const name =
+    state.student?.name ||
+    "Student";
+
+
+  $("sidebarStudentName")
+    .textContent = name;
+
+
+  $("dashboardStudentName")
+    .textContent = name;
+
+
+  $("studentAvatar")
+    .textContent =
+      name
+        .charAt(0)
+        .toUpperCase();
+
+}
+
+
+/* =========================================================
+   DASHBOARD
+   ========================================================= */
+
+function getResults() {
+
+  return JSON.parse(
+    localStorage.getItem(
+      "educhbt_results"
+    ) || "[]"
+  );
+
+}
+
+
+function refreshDashboard() {
+
+  const results =
+    getResults();
+
+
+  $("attemptCount")
+    .textContent =
+      results.length;
+
+
+  const best =
+    results.length
+      ? Math.max(
+          ...results.map(
+            result =>
+              result.percentage
+          )
+        )
+      : 0;
+
+
+  $("bestScore")
+    .textContent =
+      `${best}%`;
+
+
+  $("todayText")
+    .textContent =
+      new Date().toLocaleDateString(
+        undefined,
+        {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric"
+        }
+      );
+
+}
+
+
+/* =========================================================
+   DEPARTMENTS
+   ========================================================= */
+
+function renderDepartments() {
+
+  const grid =
+    $("departmentGrid");
+
+  grid.innerHTML = "";
+
+
+  Object.keys(departments)
+    .forEach(department => {
+
+      const button =
+        document.createElement("button");
+
+
+      button.className =
+        "choice-btn";
+
+
+      button.innerHTML = `
+
+        <strong>
+          ${department} Department
+        </strong>
+
+        <small>
+          ${departments[department].length}
+          subjects available
+        </small>
+
+      `;
+
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          state.department =
+            department;
+
+          state.subject = "";
+
+          state.classLevel = "";
+
+          renderSubjects(
+            department
+          );
+
+        }
+      );
+
+
+      grid.appendChild(button);
+
+    });
+
+}
+
+
+/* =========================================================
+   SUBJECTS
+   ========================================================= */
+
+function renderSubjects(department) {
+
+  $("subjectStep")
+    .classList.remove("hidden");
+
+
+  $("classStep")
+    .classList.add("hidden");
+
+
+  const grid =
+    $("subjectGrid");
+
+  grid.innerHTML = "";
+
+
+  departments[department]
+    .forEach(subject => {
+
+      const button =
+        document.createElement("button");
+
+
+      button.className =
+        "choice-btn";
+
+
+      button.innerHTML = `
+
+        <strong>
+          ${subject}
+        </strong>
+
+        <small>
+          Practice ${subject}
+        </small>
+
+      `;
+
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          state.subject =
+            subject;
+
+          renderClasses();
+
+        }
+      );
+
+
+      grid.appendChild(button);
+
+    });
+
+
+  $("subjectStep")
+    .scrollIntoView({
+      behavior: "smooth"
+    });
+
+}
+
+
+/* =========================================================
+   CLASS LEVEL
+   ========================================================= */
+
+function renderClasses() {
+
+  $("classStep")
+    .classList.remove("hidden");
+
+
+  const grid =
+    $("classGrid");
+
+  grid.innerHTML = "";
+
+
+  ["SS1", "SS2", "SS3"]
+    .forEach(cls => {
+
+      const button =
+        document.createElement("button");
+
+
+      button.className =
+        "choice-btn";
+
+
+      button.innerHTML = `
+
+        <strong>
+          ${cls}
+        </strong>
+
+        <small>
+          50 unique questions
+        </small>
+
+      `;
+
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          state.classLevel =
+            cls;
+
+          startExam();
+
+        }
+      );
+
+
+      grid.appendChild(button);
+
+    });
+
+
+  $("classStep")
+    .scrollIntoView({
+      behavior: "smooth"
+    });
+
+}
+
+
+/* =========================================================
+   START EXAM
+   ========================================================= */
+
+function startExam() {
+
+  const bank =
+    questionBank[state.subject];
+
+
+  if (
+    !bank ||
+    !bank[state.classLevel]
+  ) {
+
+    toast(
+      "Questions are not available for this selection."
+    );
+
+    return;
+
+  }
+
+
+  state.questions =
+    [...bank[state.classLevel]];
+
+
+  state.current = 0;
+
+
+  state.answers =
+    new Array(
+      state.questions.length
+    ).fill(null);
+
+
+  state.timeLeft =
+    120 * 60;
+
+
+  state.submitted = false;
+
+
+  $("examTitle")
+    .textContent =
+      state.subject;
+
+
+  $("examSubtitle")
+    .textContent =
+      `${state.department} • ${state.classLevel}`;
+
+
+  showScreen("examPage");
+
+
+  renderQuestionNavigator();
+
+  renderQuestion();
 
   startTimer();
 
 }
 
 
-/* =====================================================
-   DISPLAY QUESTION
-===================================================== */
+/* =========================================================
+   RENDER QUESTION
+   ========================================================= */
 
-function displayQuestion() {
+function renderQuestion() {
 
   const question =
-    examQuestions[currentQuestion];
-
-  document.getElementById("questionNumber")
-    .textContent = currentQuestion + 1;
-
-  document.getElementById("questionText")
-    .textContent = question.question;
-
-  document.getElementById("questionProgress")
-    .style.width =
-      ((currentQuestion + 1) / 50 * 100) + "%";
-
-  document.getElementById("answeredText")
-    .textContent =
-      answers.filter(a => a !== null).length +
-      " answered";
+    state.questions[state.current];
 
 
-  const optionsContainer =
-    document.getElementById("optionsContainer");
-
-  optionsContainer.innerHTML = "";
-
-  const letters = ["A", "B", "C", "D"];
-
-  question.options.forEach((option, index) => {
-
-    const div = document.createElement("div");
-
-    div.className = "option";
-
-    if (answers[currentQuestion] === index) {
-      div.classList.add("selected");
-    }
-
-    div.onclick = () => selectAnswer(index);
-
-    div.innerHTML = `
-
-      <div class="option-letter">
-        ${letters[index]}
-      </div>
-
-      <span>${option}</span>
-
-    `;
-
-    optionsContainer.appendChild(div);
-
-  });
-
-
-  document.getElementById("previousBtn")
-    .disabled = currentQuestion === 0;
-
-  if (currentQuestion === 49) {
-
-    document.getElementById("nextBtn")
-      .classList.add("hidden");
-
-    document.getElementById("submitBtn")
-      .classList.remove("hidden");
-
-  } else {
-
-    document.getElementById("nextBtn")
-      .classList.remove("hidden");
-
-    document.getElementById("submitBtn")
-      .classList.add("hidden");
-
+  if (!question) {
+    return;
   }
 
-  updateQuestionNavigator();
+
+  $("questionNumber")
+    .textContent =
+      `Question ${
+        state.current + 1
+      } of ${
+        state.questions.length
+      }`;
+
+
+  $("questionTopic")
+    .textContent =
+      question.topic;
+
+
+  $("questionText")
+    .textContent =
+      question.question;
+
+
+  const options =
+    $("optionsContainer");
+
+
+  options.innerHTML = "";
+
+
+  question.options
+    .forEach(
+      (option, index) => {
+
+        const button =
+          document.createElement(
+            "button"
+          );
+
+
+        button.className =
+          "option-btn";
+
+
+        if (
+          state.answers[
+            state.current
+          ] === index
+        ) {
+
+          button.classList.add(
+            "selected"
+          );
+
+        }
+
+
+        button.textContent =
+          `${String.fromCharCode(
+            65 + index
+          )}. ${option}`;
+
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            state.answers[
+              state.current
+            ] = index;
+
+
+            renderQuestion();
+
+            renderQuestionNavigator();
+
+          }
+        );
+
+
+        options.appendChild(
+          button
+        );
+
+      }
+    );
+
+
+  $("prevBtn")
+    .disabled =
+      state.current === 0;
+
+
+  $("nextBtn")
+    .classList.toggle(
+      "hidden",
+      state.current ===
+        state.questions.length - 1
+    );
+
+
+  $("submitBtn")
+    .classList.toggle(
+      "hidden",
+      state.current !==
+        state.questions.length - 1
+    );
+
+
+  renderQuestionNavigator();
 
 }
 
 
-/* =====================================================
-   SELECT ANSWER
-===================================================== */
+/* =========================================================
+   QUESTION NAVIGATOR
+   ========================================================= */
 
-function selectAnswer(index) {
+function renderQuestionNavigator() {
 
-  answers[currentQuestion] = index;
+  const nav =
+    $("questionNavigator");
 
-  displayQuestion();
+
+  nav.innerHTML = "";
+
+
+  state.questions.forEach(
+    (_, index) => {
+
+      const button =
+        document.createElement(
+          "button"
+        );
+
+
+      button.className =
+        "question-number";
+
+
+      button.textContent =
+        index + 1;
+
+
+      if (
+        index === state.current
+      ) {
+
+        button.classList.add(
+          "current"
+        );
+
+      }
+
+
+      if (
+        state.answers[index] !== null
+      ) {
+
+        button.classList.add(
+          "answered"
+        );
+
+      }
+
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          state.current =
+            index;
+
+          renderQuestion();
+
+        }
+      );
+
+
+      nav.appendChild(
+        button
+      );
+
+    }
+  );
 
 }
 
 
-/* =====================================================
-   NEXT / PREVIOUS
-===================================================== */
+/* =========================================================
+   NEXT QUESTION
+   ========================================================= */
 
 function nextQuestion() {
 
-  if (currentQuestion < 49) {
+  if (
+    state.current <
+    state.questions.length - 1
+  ) {
 
-    currentQuestion++;
+    state.current++;
 
-    displayQuestion();
+    renderQuestion();
 
   }
 
 }
 
+
+/* =========================================================
+   PREVIOUS QUESTION
+   ========================================================= */
 
 function previousQuestion() {
 
-  if (currentQuestion > 0) {
+  if (
+    state.current > 0
+  ) {
 
-    currentQuestion--;
+    state.current--;
 
-    displayQuestion();
-
-  }
-
-}
-
-
-/* =====================================================
-   QUESTION NAVIGATOR
-===================================================== */
-
-function buildQuestionNavigator() {
-
-  const container =
-    document.getElementById("questionNumbers");
-
-  container.innerHTML = "";
-
-  for (let i = 0; i < 50; i++) {
-
-    const button =
-      document.createElement("div");
-
-    button.className = "question-number";
-
-    button.textContent = i + 1;
-
-    button.onclick = () => {
-
-      currentQuestion = i;
-
-      displayQuestion();
-
-    };
-
-    container.appendChild(button);
+    renderQuestion();
 
   }
 
 }
 
 
-function updateQuestionNavigator() {
-
-  document
-    .querySelectorAll(".question-number")
-    .forEach((button, index) => {
-
-      button.classList.remove(
-        "current",
-        "answered"
-      );
-
-      if (index === currentQuestion) {
-        button.classList.add("current");
-      }
-
-      if (answers[index] !== null) {
-        button.classList.add("answered");
-      }
-
-    });
-
-}
-
-
-/* =====================================================
+/* =========================================================
    TIMER
-===================================================== */
+   ========================================================= */
 
 function startTimer() {
 
-  clearInterval(timerInterval);
+  stopTimer();
 
-  updateTimerDisplay();
+  updateTimer();
 
-  timerInterval = setInterval(() => {
 
-    timeLeft--;
+  state.timer =
+    setInterval(
+      () => {
 
-    updateTimerDisplay();
+        state.timeLeft--;
 
-    if (timeLeft <= 0) {
+        updateTimer();
 
-      clearInterval(timerInterval);
 
-      showToast("Time is up. Your exam will be submitted.");
+        if (
+          state.timeLeft <= 0
+        ) {
 
-      submitExam();
+          stopTimer();
 
-    }
+          submitExam(true);
 
-  }, 1000);
+        }
+
+      },
+      1000
+    );
 
 }
 
 
-function updateTimerDisplay() {
+/* =========================================================
+   STOP TIMER
+   ========================================================= */
+
+function stopTimer() {
+
+  if (state.timer) {
+
+    clearInterval(
+      state.timer
+    );
+
+  }
+
+
+  state.timer = null;
+
+}
+
+
+/* =========================================================
+   UPDATE TIMER
+   ========================================================= */
+
+function updateTimer() {
+
+  const hours =
+    Math.floor(
+      state.timeLeft / 3600
+    );
+
 
   const minutes =
-    Math.floor(timeLeft / 60);
+    Math.floor(
+      (state.timeLeft % 3600) /
+      60
+    );
+
 
   const seconds =
-    timeLeft % 60;
+    state.timeLeft % 60;
 
-  document.getElementById("timer")
+
+  $("timer")
     .textContent =
-      `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+      `${String(hours).padStart(2, "0")}:` +
+      `${String(minutes).padStart(2, "0")}:` +
+      `${String(seconds).padStart(2, "0")}`;
+
+
+  if (
+    state.timeLeft <= 300
+  ) {
+
+    $("timer").style.color =
+      "#ff7777";
+
+  }
+
+  else {
+
+    $("timer").style.color = "";
+
+  }
 
 }
 
 
-/* =====================================================
+/* =========================================================
    SUBMIT EXAM
-===================================================== */
+   ========================================================= */
 
-function submitExam() {
+function submitExam(auto = false) {
 
-  clearInterval(timerInterval);
+  if (state.submitted) {
+    return;
+  }
 
-  let score = 0;
 
-  examQuestions.forEach((question, index) => {
+  state.submitted = true;
 
-    if (answers[index] === question.answer) {
-      score++;
+
+  stopTimer();
+
+
+  let correct = 0;
+
+
+  state.questions.forEach(
+    (question, index) => {
+
+      if (
+        state.answers[index] ===
+        question.answer
+      ) {
+
+        correct++;
+
+      }
+
     }
+  );
 
-  });
+
+  const total =
+    state.questions.length;
+
 
   const percentage =
-    Math.round((score / 50) * 100);
+    Math.round(
+      (correct / total) * 100
+    );
+
 
   const result = {
 
     id: Date.now(),
 
-    student: student.name,
+    student:
+      state.student?.name ||
+      "Student",
 
-    department: selectedDepartment,
+    department:
+      state.department,
 
-    subject: selectedSubject,
+    subject:
+      state.subject,
 
-    classLevel: selectedClass,
+    classLevel:
+      state.classLevel,
 
-    score,
+    correct,
 
-    total: 50,
+    total,
 
     percentage,
 
-    date: new Date().toLocaleString()
+    date:
+      new Date().toLocaleString()
 
   };
 
 
   const results =
-    JSON.parse(
-      localStorage.getItem("cbtResults")
-    ) || [];
+    getResults();
 
-  results.unshift(result);
+
+  results.push(result);
+
 
   localStorage.setItem(
-    "cbtResults",
+    "educhbt_results",
     JSON.stringify(results)
   );
 
 
-  document.getElementById("resultPercentage")
-    .textContent = percentage + "%";
-
-  document.getElementById("resultScore")
-    .textContent = `${score} / 50`;
-
-  document.getElementById("resultSubject")
-    .textContent = selectedSubject;
-
-  document.getElementById("resultClass")
-    .textContent = selectedClass;
+  $("resultExamLabel")
+    .textContent =
+      `${result.subject} • ${
+        result.classLevel
+      } • ${
+        result.department
+      } Department`;
 
 
-  if (percentage >= 70) {
+  $("resultPercentage")
+    .textContent =
+      `${percentage}%`;
 
-    document.getElementById("resultMessage")
-      .textContent =
-      "Excellent performance! Keep up the good work.";
 
-  } else if (percentage >= 50) {
+  $("resultCorrect")
+    .textContent =
+      correct;
 
-    document.getElementById("resultMessage")
-      .textContent =
-      "Good effort. Continue practising to improve.";
 
-  } else {
+  $("resultTotal")
+    .textContent =
+      total;
 
-    document.getElementById("resultMessage")
-      .textContent =
-      "Keep studying and practising. You can improve.";
 
+  $("resultGrade")
+    .textContent =
+      gradeFor(
+        percentage
+      );
+
+
+  showScreen(
+    "resultPage"
+  );
+
+
+  toast(
+    auto
+      ? "Time is up. Your exam was submitted."
+      : "Exam submitted successfully."
+  );
+
+}
+
+
+/* =========================================================
+   GRADING
+   ========================================================= */
+
+function gradeFor(percentage) {
+
+  if (percentage >= 75) {
+    return "A";
   }
 
+  if (percentage >= 65) {
+    return "B";
+  }
 
-  updateDashboardStats();
+  if (percentage >= 55) {
+    return "C";
+  }
 
-  renderResults();
+  if (percentage >= 45) {
+    return "D";
+  }
 
-  showPage("resultPage");
+  if (percentage >= 40) {
+    return "E";
+  }
 
-}
-
-
-/* =====================================================
-   RESULTS
-===================================================== */
-
-function getResults() {
-
-  return JSON.parse(
-    localStorage.getItem("cbtResults")
-  ) || [];
+  return "F";
 
 }
 
+
+/* =========================================================
+   RESULTS HISTORY
+   ========================================================= */
 
 function renderResults() {
 
   const container =
-    document.getElementById("resultsContainer");
+    $("resultsList");
 
-  const results = getResults();
 
-  if (results.length === 0) {
+  const results =
+    getResults()
+      .slice()
+      .reverse();
+
+
+  container.innerHTML = "";
+
+
+  if (!results.length) {
 
     container.innerHTML = `
 
-      <div class="empty-state">
+      <div class="step-card">
 
-        <i class="fa-solid fa-chart-simple"></i>
+        <h3>
+          No results yet
+        </h3>
 
-        <h3>No Results Yet</h3>
-
-        <p>
-          Complete a CBT practice test to see your results here.
+        <p class="muted">
+          Complete a CBT practice session
+          and your result will appear here.
         </p>
 
       </div>
@@ -1570,303 +1746,687 @@ function renderResults() {
   }
 
 
-  let html = `
+  results.forEach(
+    result => {
 
-    <div class="result-history">
-
-      <div class="result-row">
-
-        <strong>Subject</strong>
-        <strong>Class</strong>
-        <strong>Score</strong>
-        <strong>Date</strong>
-
-      </div>
-
-  `;
+      const card =
+        document.createElement(
+          "article"
+        );
 
 
-  results.forEach(result => {
+      const scoreClass =
+        result.percentage >= 65
+          ? "score-good"
+          : result.percentage >= 45
+            ? "score-mid"
+            : "score-low";
 
-    html += `
 
-      <div class="result-row">
+      card.className =
+        "result-history-card";
 
-        <div>
-          <strong>${result.subject}</strong>
-          <small>${result.department}</small>
-        </div>
+
+      card.innerHTML = `
 
         <div>
-          ${result.classLevel}
-        </div>
 
-        <div>
-          <span class="result-badge">
-            ${result.score}/${result.total}
-            (${result.percentage}%)
+          <strong>
+            ${escapeHtml(
+              result.subject
+            )}
+          </strong>
+
+          <span>
+            ${escapeHtml(
+              result.department
+            )}
+            •
+            ${escapeHtml(
+              result.classLevel
+            )}
           </span>
+
         </div>
+
 
         <div>
-          <small>${result.date}</small>
+
+          <strong>
+            ${result.correct}/${result.total}
+          </strong>
+
+          <span>
+            Correct
+          </span>
+
         </div>
 
-      </div>
 
-    `;
+        <div>
 
-  });
+          <strong
+            class="${scoreClass}">
+            ${result.percentage}%
+          </strong>
+
+          <span>
+            Percentage
+          </span>
+
+        </div>
 
 
-  html += `</div>`;
+        <div>
 
-  container.innerHTML = html;
+          <strong>
+            ${gradeFor(
+              result.percentage
+            )}
+          </strong>
 
-}
+          <span>
+            ${escapeHtml(
+              result.date
+            )}
+          </span>
+
+        </div>
+
+      `;
 
 
-function updateDashboardStats() {
-
-  const results = getResults();
-
-  document.getElementById("examCount")
-    .textContent = results.length;
-
-  if (results.length > 0) {
-
-    const best =
-      Math.max(
-        ...results.map(r => r.percentage)
+      container.appendChild(
+        card
       );
 
-    document.getElementById("bestScore")
-      .textContent = best + "%";
-
-  } else {
-
-    document.getElementById("bestScore")
-      .textContent = "0%";
-
-  }
-
-}
-
-
-/* =====================================================
-   LIBRARY
-===================================================== */
-
-function renderLibrarySubjects() {
-
-  const container =
-    document.getElementById("librarySubjects");
-
-  container.innerHTML = "";
-
-  const allSubjects =
-    [...new Set(
-      Object.values(departments).flat()
-    )];
-
-
-  allSubjects.forEach(subject => {
-
-    const card =
-      document.createElement("div");
-
-    card.className = "subject-card";
-
-    card.onclick =
-      () => openLibrarySubject(subject);
-
-    card.innerHTML = `
-
-      <div class="subject-icon">
-
-        <i class="fa-solid fa-book-open"></i>
-
-      </div>
-
-      <h3>${subject}</h3>
-
-      <p>
-        SS1 • SS2 • SS3 Notes
-      </p>
-
-    `;
-
-    container.appendChild(card);
-
-  });
-
-}
-
-
-let librarySelectedSubject = "";
-
-
-function openLibrarySubject(subject) {
-
-  librarySelectedSubject = subject;
-
-  document.getElementById("librarySubjects")
-    .classList.add("hidden");
-
-  document.getElementById("libraryClasses")
-    .classList.remove("hidden");
-
-  document.getElementById("notesArea")
-    .classList.add("hidden");
-
-  document.getElementById("librarySubjectTitle")
-    .textContent =
-      `${subject} — Choose Class`;
-
-}
-
-
-function backToLibrarySubjects() {
-
-  document.getElementById("libraryClasses")
-    .classList.add("hidden");
-
-  document.getElementById("librarySubjects")
-    .classList.remove("hidden");
-
-}
-
-
-function openNotes(classLevel) {
-
-  document.getElementById("libraryClasses")
-    .classList.add("hidden");
-
-  document.getElementById("notesArea")
-    .classList.remove("hidden");
-
-  document.getElementById("notesClass")
-    .textContent = classLevel;
-
-  document.getElementById("notesTitle")
-    .textContent = librarySelectedSubject;
-
-  createNotes(
-    librarySelectedSubject,
-    classLevel
+    }
   );
 
 }
 
 
-function backToLibraryClasses() {
+/* =========================================================
+   LIBRARY SUBJECTS
+   ========================================================= */
 
-  document.getElementById("notesArea")
-    .classList.add("hidden");
+function renderLibrarySubjects() {
 
-  document.getElementById("libraryClasses")
-    .classList.remove("hidden");
+  $("libraryHeading")
+    .textContent =
+      "Choose a subject";
+
+
+  $("librarySubjects")
+    .classList.remove(
+      "hidden"
+    );
+
+
+  $("libraryClassArea")
+    .classList.add(
+      "hidden"
+    );
+
+
+  $("notesArea")
+    .classList.add(
+      "hidden"
+    );
+
+
+  const grid =
+    $("librarySubjects");
+
+
+  grid.innerHTML = "";
+
+
+  allSubjects.forEach(
+    subject => {
+
+      const button =
+        document.createElement(
+          "button"
+        );
+
+
+      button.className =
+        "choice-btn";
+
+
+      button.innerHTML = `
+
+        <strong>
+          ${subject}
+        </strong>
+
+        <small>
+          SS1 • SS2 • SS3 notes
+        </small>
+
+      `;
+
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          openLibrarySubject(
+            subject
+          );
+
+        }
+      );
+
+
+      grid.appendChild(
+        button
+      );
+
+    }
+  );
 
 }
 
 
-/* =====================================================
-   NOTES
-===================================================== */
+/* =========================================================
+   OPEN LIBRARY SUBJECT
+   ========================================================= */
 
-function createNotes(subject, classLevel) {
+function openLibrarySubject(
+  subject
+) {
 
-  const container =
-    document.getElementById("notesContent");
-
-  const subjectTopics =
-    topics[subject] || [
-      "Introduction",
-      "Basic Concepts",
-      "Revision",
-      "Practice"
-    ];
+  state.librarySubject =
+    subject;
 
 
-  let html = "";
+  $("librarySubjects")
+    .classList.add(
+      "hidden"
+    );
 
-  subjectTopics.forEach((topic, index) => {
 
-    html += `
+  $("libraryClassArea")
+    .classList.remove(
+      "hidden"
+    );
 
-      <div class="note-section">
 
-        <h3>
-          ${index + 1}. ${topic}
-        </h3>
+  $("notesArea")
+    .classList.add(
+      "hidden"
+    );
 
-        <p>
-          <strong>${topic}</strong> is an important
-          area of ${subject} for ${classLevel} students.
-          Study the main concepts, definitions,
-          examples and applications related to this topic.
-        </p>
 
-        <p>
-          Students should revise their school notes,
-          understand worked examples and practise
-          relevant examination-style questions.
-        </p>
+  $("libraryClassHeading")
+    .textContent =
+      `${subject} — Choose class`;
 
-      </div>
+
+  const grid =
+    $("libraryClassGrid");
+
+
+  grid.innerHTML = "";
+
+
+  ["SS1", "SS2", "SS3"]
+    .forEach(cls => {
+
+      const button =
+        document.createElement(
+          "button"
+        );
+
+
+      button.className =
+        "choice-btn";
+
+
+      button.innerHTML = `
+
+        <strong>
+          ${cls}
+        </strong>
+
+        <small>
+          Open ${subject}
+          revision notes
+        </small>
+
+      `;
+
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          openNotes(cls);
+
+        }
+      );
+
+
+      grid.appendChild(
+        button
+      );
+
+    });
+
+}
+
+
+/* =========================================================
+   OPEN NOTES
+   ========================================================= */
+
+function openNotes(cls) {
+
+  state.libraryClass =
+    cls;
+
+
+  $("libraryClassArea")
+    .classList.add(
+      "hidden"
+    );
+
+
+  $("notesArea")
+    .classList.remove(
+      "hidden"
+    );
+
+
+  const subject =
+    state.librarySubject;
+
+
+  const topics =
+    subjectTopics[subject] ||
+    ["General"];
+
+
+  $("notesContent")
+    .innerHTML = `
+
+      <span class="eyebrow">
+        ${escapeHtml(cls)}
+        DIGITAL NOTES
+      </span>
+
+      <h2>
+        ${escapeHtml(subject)}
+      </h2>
+
+      <p class="muted">
+        Original revision notes for school practice.
+        These are study materials, not official
+        examination questions.
+      </p>
+
+      <h3>
+        Topics to revise
+      </h3>
+
+      <ul>
+        ${topics
+          .map(
+            topic =>
+              `<li>${escapeHtml(topic)}</li>`
+          )
+          .join("")}
+      </ul>
+
+      <h3>
+        Study approach
+      </h3>
+
+      <p>
+        Read each topic carefully, make short
+        revision points, practise questions,
+        and review your mistakes after each
+        CBT session.
+      </p>
 
     `;
 
-  });
-
-
-  container.innerHTML = html;
-
 }
 
 
-/* =====================================================
+/* =========================================================
    TOAST
-===================================================== */
+   ========================================================= */
 
-function showToast(message) {
+function toast(message) {
 
-  const toast =
-    document.getElementById("toast");
+  const element =
+    $("toast");
 
-  toast.textContent = message;
 
-  toast.classList.add("show");
+  element.textContent =
+    message;
 
-  setTimeout(() => {
 
-    toast.classList.remove("show");
+  element.classList.add(
+    "show"
+  );
 
-  }, 7200);
+
+  clearTimeout(
+    toast.timer
+  );
+
+
+  toast.timer =
+    setTimeout(
+      () => {
+
+        element.classList.remove(
+          "show"
+        );
+
+      },
+      2800
+    );
 
 }
 
 
-/* =====================================================
-   STARTUP
-===================================================== */
+/* =========================================================
+   ESCAPE HTML
+   ========================================================= */
 
-window.addEventListener("DOMContentLoaded", () => {
+function escapeHtml(value) {
 
-  if (student) {
+  return String(value)
 
-    loadApplication();
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
 
-  } else {
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
 
-    document.getElementById("authScreen")
-      .classList.remove("hidden");
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
 
-    document.getElementById("appScreen")
-      .classList.add("hidden");
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
+
+}
+
+
+/* =========================================================
+   CLICK EVENTS
+   ========================================================= */
+
+document.addEventListener(
+  "click",
+  event => {
+
+    const actionElement =
+      event.target.closest(
+        "[data-action]"
+      );
+
+
+    if (actionElement) {
+
+      const action =
+        actionElement.dataset.action;
+
+
+      if (
+        action === "open-login"
+      ) {
+
+        openAuth("login");
+
+      }
+
+
+      if (
+        action === "open-register"
+      ) {
+
+        openAuth("register");
+
+      }
+
+
+      if (
+        action === "close-auth"
+      ) {
+
+        showScreen(
+          "landingPage"
+        );
+
+      }
+
+
+      if (
+        action === "show-login"
+      ) {
+
+        openAuth("login");
+
+      }
+
+
+      if (
+        action === "show-register"
+      ) {
+
+        openAuth("register");
+
+      }
+
+
+      if (
+        action === "logout"
+      ) {
+
+        logout();
+
+      }
+
+
+      if (
+        action === "dashboard"
+      ) {
+
+        showScreen(
+          "appPage"
+        );
+
+        showAppSection(
+          "dashboard"
+        );
+
+      }
+
+
+      if (
+        action === "library-back"
+      ) {
+
+        renderLibrarySubjects();
+
+      }
+
+
+      if (
+        action === "notes-back"
+      ) {
+
+        openLibrarySubject(
+          state.librarySubject
+        );
+
+      }
+
+
+      if (
+        action === "result-dashboard"
+      ) {
+
+        showScreen(
+          "appPage"
+        );
+
+        showAppSection(
+          "dashboard"
+        );
+
+      }
+
+    }
+
+
+    const pageElement =
+      event.target.closest(
+        "[data-page]"
+      );
+
+
+    if (pageElement) {
+
+      showScreen(
+        "appPage"
+      );
+
+
+      showAppSection(
+        pageElement.dataset.page
+      );
+
+    }
 
   }
+);
 
-  renderResults();
 
-});
+/* =========================================================
+   FORM EVENTS
+   ========================================================= */
+
+document.addEventListener(
+  "submit",
+  event => {
+
+    if (
+      event.target.id ===
+      "loginForm"
+    ) {
+
+      handleLogin(event);
+
+    }
+
+
+    if (
+      event.target.id ===
+      "registerForm"
+    ) {
+
+      handleRegister(event);
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   EXAM BUTTON EVENTS
+   ========================================================= */
+
+$("prevBtn")
+  .addEventListener(
+    "click",
+    previousQuestion
+  );
+
+
+$("nextBtn")
+  .addEventListener(
+    "click",
+    nextQuestion
+  );
+
+
+$("submitBtn")
+  .addEventListener(
+    "click",
+    () =>
+      submitExam(false)
+  );
+
+
+/* =========================================================
+   PREVENT ACCIDENTAL EXAM EXIT
+   ========================================================= */
+
+window.addEventListener(
+  "beforeunload",
+  event => {
+
+    if (
+      state.questions.length &&
+      !state.submitted &&
+      $("examPage").classList.contains(
+        "active"
+      )
+    ) {
+
+      event.preventDefault();
+
+      event.returnValue = "";
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   INITIAL STATE
+   ========================================================= */
+
+if (state.student) {
+
+  showScreen(
+    "appPage"
+  );
+
+  updateStudentUI();
+
+  showAppSection(
+    "dashboard"
+  );
+
+}
+
+else {
+
+  showScreen(
+    "landingPage"
+  );
+
+}
