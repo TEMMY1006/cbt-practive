@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduCBT School Portal</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- ================= AUTH ================= -->
+
+<section id="authScreen" class="auth-screen">
+
+  <div class="auth-left">
+    <div class="brand">
+      <div class="brand-logo">
+        <i class="fa-solid fa-graduation-cap"></i>
+      </div>
+      <span>Edu<span>CBT</span></span>
+    </div>
+
+    <div class="auth-content">
+      <h1>Smart Learning.<br><span>Better Results.</span></h1>
+      <p>
+        A modern school CBT training and digital learning platform
+        designed to help students prepare, practise and improve.
+      </p>
+
+      <div class="auth-features">
+        <div>
+          <i class="fa-solid fa-circle-check"></i>
+          CBT Practice
+        </div>
+
+        <div>
+          <i class="fa-solid fa-circle-check"></i>
+          Digital Library
+        </div>
+
+        <div>
+          <i class="fa-solid fa-circle-check"></i>
+          Automatic Results
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="auth-right">
+
+    <!-- LOGIN -->
+    <div id="loginBox" class="auth-box">
+
+      <h2>Welcome Back</h2>
+      <p>Login to continue your learning journey.</p>
+
+      <form id="loginForm">
+
+        <label>Email</label>
+        <div class="input-box">
+          <i class="fa-solid fa-envelope"></i>
+          <input type="email" id="loginEmail" required placeholder="Enter your email">
+        </div>
+
+        <label>Password</label>
+        <div class="input-box">
+          <i class="fa-solid fa-lock"></i>
+          <input type="password" id="loginPassword" required placeholder="Enter your password">
+        </div>
+
+        <button class="primary-btn" type="submit">
+          Login
+        </button>
+
+      </form>
+
+      <p class="switch-text">
+        Don't have an account?
+        <button onclick="showRegister()">Create Account</button>
+      </p>
+
+    </div>
+
+
+    <!-- REGISTER -->
+    <div id="registerBox" class="auth-box hidden">
+
+      <h2>Create Account</h2>
+      <p>Register as a student to start practising.</p>
+
+      <form id="registerForm">
+
+        <label>Full Name</label>
+        <div class="input-box">
+          <i class="fa-solid fa-user"></i>
+          <input type="text" id="regName" required placeholder="Full name">
+        </div>
+
+        <label>Email</label>
+        <div class="input-box">
+          <i class="fa-solid fa-envelope"></i>
+          <input type="email" id="regEmail" required placeholder="Email address">
+        </div>
+
+        <label>Password</label>
+        <div class="input-box">
+          <i class="fa-solid fa-lock"></i>
+          <input type="password" id="regPassword" required placeholder="Create password">
+        </div>
+
+        <label>Class</label>
+        <select id="regClass" required>
+          <option value="">Select class</option>
+          <option>SS1</option>
+          <option>SS2</option>
+          <option>SS3</option>
+        </select>
+
+        <button class="primary-btn" type="submit">
+          Create Account
+        </button>
+
+      </form>
+
+      <p class="switch-text">
+        Already have an account?
+        <button onclick="showLogin()">Login</button>
+      </p>
+
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ================= MAIN APP ================= -->
+
+<section id="appScreen" class="app-screen hidden">
+
+  <!-- SIDEBAR -->
+
+  <aside class="sidebar">
+
+    <div class="sidebar-brand">
+      <div class="brand-logo">
+        <i class="fa-solid fa-graduation-cap"></i>
+      </div>
+
+      <span>Edu<span>CBT</span></span>
+    </div>
+
+    <nav>
+
+      <button class="nav-item active" onclick="showPage('dashboardPage', this)">
+        <i class="fa-solid fa-house"></i>
+        Dashboard
+      </button>
+
+      <button class="nav-item" onclick="showPage('cbtPage', this)">
+        <i class="fa-solid fa-laptop"></i>
+        CBT Practice
+      </button>
+
+      <button class="nav-item" onclick="showPage('libraryPage', this)">
+        <i class="fa-solid fa-book"></i>
+        Library
+      </button>
+
+      <button class="nav-item" onclick="showPage('resultsPage', this)">
+        <i class="fa-solid fa-chart-column"></i>
+        My Results
+      </button>
+
+    </nav>
+
+    <button class="logout-btn" onclick="logout()">
+      <i class="fa-solid fa-right-from-bracket"></i>
+      Logout
+    </button>
+
+  </aside>
+
+
+  <!-- MAIN CONTENT -->
+
+  <main class="main-content">
+
+    <header class="topbar">
+
+      <div>
+        <h2 id="pageTitle">Dashboard</h2>
+        <p id="pageSubtitle">Welcome back!</p>
+      </div>
+
+      <div class="student-chip">
+        <div class="avatar" id="studentAvatar">S</div>
+
+        <div>
+          <strong id="studentName">Student</strong>
+          <small id="studentClass">SS1</small>
+        </div>
+      </div>
+
+    </header>
+
+
+    <!-- ================= DASHBOARD ================= -->
+
+    <section id="dashboardPage" class="page">
+
+      <div class="welcome-card">
+
+        <div>
+          <span class="small-label">WELCOME BACK</span>
+          <h1>Hello, <span id="welcomeName">Student</span> 👋</h1>
+
+          <p>
+            Continue your CBT preparation and improve your academic performance.
+          </p>
+
+          <button class="white-btn" onclick="openCBT()">
+            Start CBT Practice
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+
+        <div class="welcome-icon">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+
+      </div>
+
+
+      <div class="stats-grid">
+
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </div>
+
+          <div>
+            <span>Exams Taken</span>
+            <strong id="examCount">0</strong>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fa-solid fa-star"></i>
+          </div>
+
+          <div>
+            <span>Best Score</span>
+            <strong id="bestScore">0%</strong>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fa-solid fa-book-open"></i>
+          </div>
+
+          <div>
+            <span>Subjects</span>
+            <strong>24+</strong>
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="section-heading">
+        <div>
+          <h2>Quick Access</h2>
+          <p>Choose where you want to continue.</p>
+        </div>
+      </div>
+
+
+      <div class="quick-grid">
+
+        <div class="quick-card" onclick="openCBT()">
+          <div class="quick-icon blue">
+            <i class="fa-solid fa-laptop"></i>
+          </div>
+
+          <h3>CBT Practice</h3>
+          <p>Practise with 50-question tests.</p>
+
+          <span>Start Practice →</span>
+        </div>
+
+
+        <div class="quick-card" onclick="showPage('libraryPage')">
+          <div class="quick-icon green">
+            <i class="fa-solid fa-book-open"></i>
+          </div>
+
+          <h3>Digital Library</h3>
+          <p>Read notes and revise your subjects.</p>
+
+          <span>Open Library →</span>
+        </div>
+
+
+        <div class="quick-card" onclick="showPage('resultsPage')">
+          <div class="quick-icon orange">
+            <i class="fa-solid fa-chart-line"></i>
+          </div>
+
+          <h3>My Results</h3>
+          <p>View your previous CBT performance.</p>
+
+          <span>View Results →</span>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= CBT ================= -->
+
+    <section id="cbtPage" class="page hidden">
+
+      <div class="section-heading">
+        <div>
+          <h2>CBT Practice</h2>
+          <p>Select your department, subject and class.</p>
+        </div>
+      </div>
+
+
+      <div id="departmentSelection">
+
+        <h3 class="selection-title">Choose Department</h3>
+
+        <div class="department-grid">
+
+          <div class="department-card science"
+               onclick="selectDepartment('Science')">
+
+            <div>
+              <i class="fa-solid fa-flask"></i>
+            </div>
+
+            <h3>Science</h3>
+            <p>8 Subjects</p>
+
+          </div>
+
+
+          <div class="department-card commercial"
+               onclick="selectDepartment('Commercial')">
+
+            <div>
+              <i class="fa-solid fa-chart-pie"></i>
+            </div>
+
+            <h3>Commercial</h3>
+            <p>8 Subjects</p>
+
+          </div>
+
+
+          <div class="department-card arts"
+               onclick="selectDepartment('Arts')">
+
+            <div>
+              <i class="fa-solid fa-palette"></i>
+            </div>
+
+            <h3>Arts</h3>
+            <p>8 Subjects</p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div id="subjectSelection" class="hidden">
+
+        <button class="back-btn" onclick="backToDepartments()">
+          ← Departments
+        </button>
+
+        <h3 class="selection-title">Choose Subject</h3>
+
+        <div id="subjectGrid" class="subject-grid"></div>
+
+      </div>
+
+
+      <div id="classSelection" class="hidden">
+
+        <button class="back-btn" onclick="backToSubjects()">
+          ← Subjects
+        </button>
+
+        <h3 class="selection-title">
+          Choose Class
+        </h3>
+
+        <div id="classGrid" class="class-grid">
+
+          <div class="class-card" onclick="startExam('SS1')">
+            <div>SS1</div>
+            <p>Senior Secondary 1</p>
+          </div>
+
+          <div class="class-card" onclick="startExam('SS2')">
+            <div>SS2</div>
+            <p>Senior Secondary 2</p>
+          </div>
+
+          <div class="class-card" onclick="startExam('SS3')">
+            <div>SS3</div>
+            <p>Senior Secondary 3</p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= LIBRARY ================= -->
+
+    <section id="libraryPage" class="page hidden">
+
+      <div class="section-heading">
+        <div>
+          <h2>Digital Library</h2>
+          <p>Select a subject and class to read your notes.</p>
+        </div>
+      </div>
+
+      <div id="librarySubjects" class="subject-grid"></div>
+
+      <div id="libraryClasses" class="hidden">
+
+        <button class="back-btn" onclick="backToLibrarySubjects()">
+          ← Subjects
+        </button>
+
+        <h3 id="librarySubjectTitle" class="selection-title"></h3>
+
+        <div class="class-grid">
+
+          <div class="class-card"
+               onclick="openNotes('SS1')">
+            <div>SS1</div>
+            <p>Senior Secondary 1 Notes</p>
+          </div>
+
+          <div class="class-card"
+               onclick="openNotes('SS2')">
+            <div>SS2</div>
+            <p>Senior Secondary 2 Notes</p>
+          </div>
+
+          <div class="class-card"
+               onclick="openNotes('SS3')">
+            <div>SS3</div>
+            <p>Senior Secondary 3 Notes</p>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div id="notesArea" class="hidden">
+
+        <button class="back-btn" onclick="backToLibraryClasses()">
+          ← Classes
+        </button>
+
+        <div class="notes-container">
+
+          <div class="notes-header">
+            <span id="notesClass"></span>
+            <h2 id="notesTitle"></h2>
+          </div>
+
+          <div id="notesContent"></div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= RESULTS ================= -->
+
+    <section id="resultsPage" class="page hidden">
+
+      <div class="section-heading">
+        <div>
+          <h2>My Results</h2>
+          <p>Track your CBT practice performance.</p>
+        </div>
+      </div>
+
+      <div id="resultsContainer">
+
+        <div class="empty-state">
+          <i class="fa-solid fa-chart-simple"></i>
+          <h3>No Results Yet</h3>
+          <p>Complete a CBT practice test to see your results here.</p>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= EXAM ================= -->
+
+    <section id="examPage" class="page hidden">
+
+      <div class="exam-top">
+
+        <div>
+          <span id="examDepartment"></span>
+          <h2 id="examSubject"></h2>
+          <p id="examClass"></p>
+        </div>
+
+        <div class="timer">
+          <i class="fa-regular fa-clock"></i>
+          <span id="timer">50:00</span>
+        </div>
+
+      </div>
+
+
+      <div class="exam-layout">
+
+        <div class="exam-question-card">
+
+          <div class="question-header">
+
+            <span>
+              Question <strong id="questionNumber">1</strong>
+              of 50
+            </span>
+
+            <span id="answeredText">
+              0 answered
+            </span>
+
+          </div>
+
+          <div class="progress">
+            <div id="questionProgress"></div>
+          </div>
+
+
+          <h2 id="questionText">
+            Question loading...
+          </h2>
+
+          <div id="optionsContainer"></div>
+
+
+          <div class="exam-controls">
+
+            <button id="previousBtn"
+                    class="secondary-btn"
+                    onclick="previousQuestion()">
+              <i class="fa-solid fa-arrow-left"></i>
+              Previous
+            </button>
+
+            <button id="nextBtn"
+                    class="primary-btn exam-next"
+                    onclick="nextQuestion()">
+              Next
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+
+            <button id="submitBtn"
+                    class="submit-btn hidden"
+                    onclick="submitExam()">
+              Submit Exam
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <aside class="question-sidebar">
+
+          <h3>Question Navigator</h3>
+
+          <p>Click a number to jump to a question.</p>
+
+          <div id="questionNumbers"></div>
+
+          <div class="navigator-legend">
+            <span>
+              <i class="answered-dot"></i>
+              Answered
+            </span>
+
+            <span>
+              <i class="current-dot"></i>
+              Current
+            </span>
+          </div>
+
+        </aside>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= RESULT ================= -->
+
+    <section id="resultPage" class="page hidden">
+
+      <div class="result-card">
+
+        <div class="result-icon">
+          <i class="fa-solid fa-trophy"></i>
+        </div>
+
+        <h1>Exam Completed!</h1>
+
+        <p id="resultMessage">
+          Here is your performance.
+        </p>
+
+        <div class="score-circle">
+          <span id="resultPercentage">0%</span>
+        </div>
+
+        <div class="result-info">
+
+          <div>
+            <span>Score</span>
+            <strong id="resultScore">0 / 50</strong>
+          </div>
+
+          <div>
+            <span>Subject</span>
+            <strong id="resultSubject">-</strong>
+          </div>
+
+          <div>
+            <span>Class</span>
+            <strong id="resultClass">-</strong>
+          </div>
+
+        </div>
+
+        <div class="result-buttons">
+
+          <button class="primary-btn" onclick="openCBT()">
+            Take Another Test
+          </button>
+
+          <button class="secondary-btn"
+                  onclick="showPage('resultsPage')">
+            View Results
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</section>
+
+
+<div id="toast"></div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
